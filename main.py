@@ -1,5 +1,5 @@
 import argparse
-
+import warnings
 import shutil
 import os
 
@@ -9,7 +9,7 @@ class StateSXT:
         self.tree = [
             "base",
             "database",
-            "locators",
+            "locatorsss",
             "pages",
             "testcases",
             "utils",
@@ -17,25 +17,85 @@ class StateSXT:
         ]
         self.scriptdir = os.path.dirname(os.path.realpath(__file__))
         self.maindir = os.getcwd()  # Get the current working directory
+        self.ansi = {
+            "warn": "\u001b[33m",
+            "success": "\u001b[32m",
+            "bold": "\033[1m",
+            "underline": "\033[4m",
+            "reset": "\033[0m",
+        }
 
     def generate(self):
-        # looping through the tree list
+        rate = 0
         for p in self.tree:
             sourcepath = os.path.join(self.scriptdir, p)
             destpath = os.path.join(self.maindir, p)
-            if os.path.isdir(sourcepath):
-                print("isdir")
-                shutil.copytree(sourcepath, destpath)
-            elif os.path.isfile(sourcepath):
-                print("isfile")
-                shutil.copy2(sourcepath, destpath)
-            else:
-                raise ("Invalid path!")
 
-        print(f"Directory structure created in: {self.maindir}")
+            if any(res := [os.path.isdir(destpath), os.path.isfile(destpath)]):
+                if res[0]:
+                    message = "Folder"
+                elif res[1]:
+                    message = "File"
+                warnings.warn(
+                    f"{self.ansi['warn']}{message} already exist: {self.ansi['bold']}/{p}{self.ansi['reset']}",
+                    UserWarning,
+                    stacklevel=2,
+                )
+            elif os.path.isdir(sourcepath):
+                shutil.copytree(sourcepath, destpath)
+                rate += 1
+            elif os.path.isfile(sourcepath):
+                shutil.copy2(sourcepath, destpath)
+                rate += 1
+            else:
+                warnings.warn(
+                    f"{self.ansi['warn']}Path does not exist: {self.ansi['bold']}/{p}{self.ansi['reset']}",
+                    UserWarning,
+                    stacklevel=2,
+                )
+
+        if rate == len(self.tree):
+            print(
+                f"\n{self.ansi['success']}All templates created in: {self.ansi['bold']}{self.maindir}{self.ansi['reset']}\n"
+            )
+        elif rate > 1:
+            print(
+                f"\n{self.ansi['success']}{rate} template/-s created in: {self.ansi['bold']}{self.maindir}{self.ansi['warn']}, but {len(self.tree)-rate} failed.{self.ansi['reset']}\n"
+            )
+        else:
+            print(
+                f"\n{self.ansi['warn']}All templates failed to create in: {self.ansi['bold']}{self.maindir}{self.ansi['reset']}\n"
+            )
 
     def remove(self):
-        pass
+        rate = 0
+        for p in self.tree:
+            sourcepath = os.path.join(self.maindir, p)
+            if os.path.isdir(sourcepath):
+                shutil.rmtree(sourcepath)
+                rate += 1
+            elif os.path.isfile(sourcepath):
+                os.remove(sourcepath)
+                rate += 1
+            else:
+                warnings.warn(
+                    f"{self.ansi['warn']}Path does not exist: {self.ansi['bold']}/{p}{self.ansi['reset']}",
+                    UserWarning,
+                    stacklevel=2,
+                )
+
+        if rate == len(self.tree):
+            print(
+                f"\n{self.ansi['success']}All templates removed from: {self.ansi['bold']}{self.maindir}{self.ansi['reset']}\n"
+            )
+        elif rate > 1:
+            print(
+                f"\n{self.ansi['success']}{rate} template/-s removed from: {self.ansi['bold']}{self.maindir}{self.ansi['warn']}, but {len(self.tree)-rate} failed.{self.ansi['reset']}\n"
+            )
+        else:
+            print(
+                f"\n{self.ansi['warn']}All templates failed to remove from: {self.ansi['bold']}{self.maindir}{self.ansi['reset']}\n"
+            )
 
     def cli(self):
         parser = argparse.ArgumentParser(description="Generate Directories")
@@ -53,5 +113,9 @@ class StateSXT:
             print("statesxt doesn't has such command.")
 
 
-if __name__ == "__main__":
+def main():
     StateSXT().cli()
+
+
+if __name__ == "__main__":
+    main()
