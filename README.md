@@ -18,7 +18,7 @@ There are two approaches or options to uninstall the package.
   ```
   pip uninstall statesxt
   ```
-- Uninstalling the package and its dependencies <b>(vulnerable)</b>
+- Uninstalling the package and its dependencies <b>(vulnerable)</b>.
   To do this, the user must install a package called `pip-autoremove` (if not already installed).
   ```
   pip install pip-autoremove
