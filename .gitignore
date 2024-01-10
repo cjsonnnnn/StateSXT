@@ -84,12 +84,6 @@ db.sqlite3-journal
 instance/
 .webassets-cache
 
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
 # PyBuilder
 .pybuilder/
 target/
@@ -201,7 +195,7 @@ pyvenv.cfg
 pip-selfcheck.json
 
 ### VisualStudioCode ###
-.vscode/*
+.vscode/
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
@@ -218,5 +212,8 @@ pip-selfcheck.json
 # Ignore all local history of files
 .history
 .ionide
+
+# Sphinx documentation build
+*/docs/_build/
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,python,virtualenv,git
