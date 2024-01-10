@@ -3,7 +3,7 @@ version: 2
 
 # OS and Tools
 build:
-  os: Windows
+  os: windows
   tools:
     python: "3.10"
 

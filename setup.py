@@ -2,7 +2,7 @@ import setuptools
 
 with open("README.md", encoding="utf8") as file:
     LONG_DESC = file.read()
-#
+
 setuptools.setup(
     name="statesxt",
     version="0.1.2",
