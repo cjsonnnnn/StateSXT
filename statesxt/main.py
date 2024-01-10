@@ -9,7 +9,7 @@ class StateSXT:
         self.tree = [
             "base",
             "database",
-            "locatorsss",
+            "locators",
             "pages",
             "testcases",
             "utils",
