@@ -7,6 +7,9 @@ build:
   tools:
     python: "3.10"
 
-# Build documentation in the "docs/" directory with Sphinx
 sphinx:
   configuration: statesxt/docs/conf.py
+
+python:
+  install:
+    - requirements: statesxt/docs/requirements.txt
