@@ -3,7 +3,7 @@
 
 <br/>
 
-## How to install? idk
+## How to install?
 
 - Manually cloning the project in Github repository: [statesxt](https://github.com/jsonnnnn/statesxt)
 - Using `pip`, that the package is hosted in [here](https://test.pypi.org/project/statesxt/) <b>(recommended)</b>. 
