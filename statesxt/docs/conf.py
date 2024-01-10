@@ -6,6 +6,8 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+import sphinx_rtd_theme
+
 project = 'statesxt'
 copyright = '2024, Jason Caleb'
 author = 'Jason Caleb'
@@ -13,7 +15,9 @@ author = 'Jason Caleb'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = []
+extensions = [
+    'sphinx_rtd_theme',
+]
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
