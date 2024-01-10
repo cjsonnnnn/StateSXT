@@ -15,6 +15,7 @@ setuptools.setup(
     license="MIT License",
     project_urls={
         "Source": "https://github.com/jsonnnnn/statesxt",
+        "Documentation": "https://statesxt.readthedocs.io/en/latest/"
     },
     classifiers=[
         "Development Status :: 1 - Planning",
