@@ -8,7 +8,7 @@
 
 import sphinx_rtd_theme
 
-project = 'statesxt'
+project = 'StateSXT'
 copyright = '2024, Jason Caleb'
 author = 'Jason Caleb'
 

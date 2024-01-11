@@ -3,7 +3,7 @@
 
 <br/>
 
-## How to install?
+## How to Install?
 
 - Manually cloning the project in Github repository: [statesxt](https://github.com/jsonnnnn/statesxt)
 - Using `pip`, that the package is hosted in [here](https://test.pypi.org/project/statesxt/) <b>(recommended)</b>. 
@@ -12,7 +12,26 @@
   pip install -i https://test.pypi.org/simple/ statesxt
   ```
 
-## How to uninstall?
+
+## How to Use?
+
+- Generating the framework
+  ```bash
+  statesxt gen
+  ```
+- Remove the framework
+  ```
+  statesxt rem
+  ```
+
+
+## How to Update?
+
+Currently, the package can't be updated through usual command `pip install --upgrade statesxt`. Probably because is hosted in TestPypi.
+So, for the time being, user have to reinstall the package.
+
+
+## How to Uninstall?
 There are two approaches or options to uninstall the package.
 - Uninstalling only the package
   ```
@@ -28,19 +47,3 @@ There are two approaches or options to uninstall the package.
   pip-autoremove statesxt -y
   ```
   Note: If there is an error saying that `ModuleNotFoundError: No module named 'pip_autoremove'`, you could try to move the `pip_autoremove.py` file from `./Scripts` into `./Lib` instead. For further information: [here](https://stackoverflow.com/questions/74523001/modulenotfounderror-when-trying-to-use-pip-autoremove).
-
-## How to update?
-
-Currently, the package can't be updated through usual command `pip install --upgrade statesxt`. Probably because is hosted in TestPypi.
-So, for the time being, user have to reinstall the package.
-
-## How to use?
-
-- Generating the framework
-  ```bash
-  statesxt gen
-  ```
-- Remove the framework
-  ```
-  statesxt rem
-  ```
