@@ -23,4 +23,4 @@ Welcome to StateSXT's documentation!
    contents/pages
    contents/testcases
    contents/utils
-   contents/.env_template
+   contents/env_template

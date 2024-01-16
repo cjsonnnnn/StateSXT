@@ -58,6 +58,17 @@ StateSXT adopts a Hybrid Testing Framework, strategically combining the strength
 
 By employing this Hybrid Framework, StateSXT leverages the benefits of both approaches. The modular structure ensures scalability, maintainability, and reusability of testing components, while the keyword-driven aspect enhances script readability and facilitates collaboration across diverse stakeholders. This cohesive blend provides StateSXT users with a flexible and efficient testing solution, striking a balance between reusability and readability in the testing process.
 
+.. figure:: /_static/images/uml-framework.png
+   :alt: The UML Class Diagram for the entire template
+   :width: 720
+   :align: center
+
+   **Figure 1**: The UML Class Diagram for the entire template
+
+In order to get the big picture of the template's framework, see the UML in Figure 1. If you can not clearly see the content inside, please click on it to open a panel that allows you to zoom in/out the figure.
+
+There are also in the UML some labels that point to some classes which are part of the State Design Pattern implementation. 
+
 
 Contents
 ========
