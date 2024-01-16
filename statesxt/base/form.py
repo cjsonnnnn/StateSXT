@@ -34,9 +34,11 @@ class FormDriver:
         Inserts string into a textbox element
 
         Args:
-            target_element (WebElement): is the input element
+            element (WebElement): is the input element
             input (str): is the string to be inputted
             byEnter (bool): is the final action, e.g. True means the enter key will be pressed
+            sleep: duration between action
+            onFocus: to scroll before inserting
 
         Returns:
             None
@@ -47,13 +49,16 @@ class FormDriver:
                 element = element()
             if onFocus:
                 self.mkd.scrolling(element)
-            self.ac.pause(sleep).click(element).send_keys(Keys.END).key_down(Keys.SHIFT).send_keys(Keys.HOME).key_up(
+            self.ac.pause(sleep).click(element).send_keys(Keys.END).key_down(
                 Keys.SHIFT
-            ).send_keys(Keys.BACKSPACE).send_keys(input).perform()
+            ).send_keys(Keys.HOME).key_up(Keys.SHIFT).send_keys(
+                Keys.BACKSPACE
+            ).send_keys(
+                input
+            ).perform()
 
             if byEnter:
                 self.ac.pause(sleep).send_keys(Keys.ENTER).perform()
-                # self.ac.click(target_element).pause(pauseDuration).send_keys(Keys.ENTER).perform()
 
             self.ac.reset_actions()
 
@@ -114,7 +119,9 @@ class FormDriver:
                         click_prev()
 
             def select_date(selected_date: str):
-                week_elements = self.wd.all_elements(By.CLASS_NAME, date_per_week_locator)
+                week_elements = self.wd.all_elements(
+                    By.CLASS_NAME, date_per_week_locator
+                )
                 day_elements = self.wd.all_elements(By.CLASS_NAME, date_per_day_locator)
                 day_elements_per_week = []
                 for i in range(len(week_elements)):
@@ -125,7 +132,9 @@ class FormDriver:
                 num_of_weeks = len(day_elements_per_week)
                 for i in range(num_of_weeks):
                     for date in day_elements_per_week[i]:
-                        if (i == 0 and int(date.text) > 7) or (i == num_of_weeks and int(date.text) < 20):
+                        if (i == 0 and int(date.text) > 7) or (
+                            i == num_of_weeks and int(date.text) < 20
+                        ):
                             continue
                         if date.text == selected_date:
                             date.click()
@@ -190,19 +199,18 @@ class FormDriver:
             elif method == "visible_text":
                 select.select_by_visible_text(option)
 
-    # temp: will be replaced with 'select_opt_in_radio'
-    def select_opt_in_radio_1(self, menu, option, xpath):
-        ops = list(filter(lambda x: x in option, menu))
-        if len(ops) == 1:
-            index = menu.index(ops[0]) + 1
-            return xpath.replace("X", str(index))
-        return None
-
     # need decorator (type-A)
-    def select_opt_in_radio(self, elements: Union[list[WebElement], Callable[[], list[WebElement]]], option: str):
+    def select_opt_in_radio(
+        self,
+        elements: Union[list[WebElement], Callable[[], list[WebElement]]],
+        option: str,
+    ):
         if isinstance(elements, Callable):
             elements = elements()
-        clickables, menus = [[c for c in elements[::2]], [str(m.text).lower() for m in elements[1::2]]]
+        clickables, menus = [
+            [c for c in elements[::2]],
+            [str(m.text).lower() for m in elements[1::2]],
+        ]
         index = menus.index(option.lower())
         if index:
             clickables[index].click()

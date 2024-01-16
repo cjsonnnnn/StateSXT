@@ -36,14 +36,18 @@ class GSheetBBUI(GSheet):
         super().__init__(spreadsheetName)
         self.curDate = dt.now().strftime("%Y/%m/%d %H:%M:%S")
         self.automationName = "Selenium"
-        self.newSpreadsheetName = f"BBUI Automation - Release {self.curDate} - {usedDomain.upper()}"
+        self.newSpreadsheetName = (
+            f"BBUI Automation - Release {self.curDate} - {usedDomain.upper()}"
+        )
         self.__folderId = folderId
         self.__newSs = None
         self.testedFilesOnly = testedFilesOnly
         self.executeJSON = executeJSON
         self.json_path = "last_run_data.json"
 
-    def create_a_copy_of_worksheet_into_new_gsheet_file_and_update_the_values(self, worksheetName, namedRange, values):
+    def create_a_copy_of_worksheet_into_new_gsheet_file_and_update_the_values(
+        self, worksheetName, namedRange, values
+    ):
         try:  # assuming that the gsheet has already a worksheet with paramater name
             wks = self.__newSs.worksheet(worksheetName)
         except:  # assuming that the gsheet does not have any worksheet the same with the parameter
@@ -53,7 +57,9 @@ class GSheetBBUI(GSheet):
         wks.update(namedRange, values, value_input_option="USER_ENTERED")
 
     def create_a_copy_of_gsheet_file(self):
-        self.sa.copy(file_id=self.ss.id, title=self.newSpreadsheetName, copy_permissions=True)
+        self.sa.copy(
+            file_id=self.ss.id, title=self.newSpreadsheetName, copy_permissions=True
+        )
         self.__newSs = self.sa.open(self.newSpreadsheetName)
         if self.testedFilesOnly:
             deleteRequests = []
@@ -70,12 +76,16 @@ class GSheetBBUI(GSheet):
     def upload_the_gsheet_file_to_folder(self):
         # Move the newly created spreadsheet to the desired folder
         drive_service = build("drive", "v3", credentials=self.sa.auth)
-        drive_service.files().update(fileId=self.__newSs.id, addParents=self.__folderId, fields="id,parents").execute()
+        drive_service.files().update(
+            fileId=self.__newSs.id, addParents=self.__folderId, fields="id,parents"
+        ).execute()
 
     def save_data_to_json(self):
         # Write data to the JSON file
         with open(self.json_path, "w") as json_file:
-            json.dump(self.scenarioResult, json_file, indent=4)  # Use indent for pretty formatting
+            json.dump(
+                self.scenarioResult, json_file, indent=4
+            )  # Use indent for pretty formatting
 
     def get_json(self):
         # Read data from the JSON file
@@ -100,7 +110,9 @@ class GSheetBBUI(GSheet):
                         externalCheckResult,
                         testerNote,
                     ]
-                    for internalCheckResult, externalCheckResult, testerNote in data[worksheetName][namedRange]
+                    for internalCheckResult, externalCheckResult, testerNote in data[
+                        worksheetName
+                    ][namedRange]
                 ]
                 self.create_a_copy_of_worksheet_into_new_gsheet_file_and_update_the_values(
                     worksheetName, namedRange.replace("Data", "Form"), values

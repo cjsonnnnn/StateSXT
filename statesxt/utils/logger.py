@@ -18,7 +18,9 @@ class Logger:
         self.logger = logging.getLogger("root")
         self.file_handler = logging.FileHandler("automation.log", mode="w")
         # self.console_handler = logging.StreamHandler()
-        self.formatter = logging.Formatter("%(asctime)s | %(name)s | %(levelname)s | %(message)s")
+        self.formatter = logging.Formatter(
+            "%(asctime)s | %(name)s | %(levelname)s | %(message)s"
+        )
 
         # set up
         self.setup()

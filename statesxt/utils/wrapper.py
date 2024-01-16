@@ -21,9 +21,9 @@ class Wrapper:
             try:
                 return func(*args, **kwargs)
             except Exception as e:
-                logging.getLogger(f"root.{__name__}.{decoratorClassName}.{decoratorMethodName}").error(
-                    f"error:\n{str(e)}"
-                )
+                logging.getLogger(
+                    f"root.{__name__}.{decoratorClassName}.{decoratorMethodName}"
+                ).error(f"error:\n{str(e)}")
                 return None
 
         return wrapper
@@ -41,9 +41,9 @@ class Wrapper:
             try:
                 return func(*args, **kwargs)
             except Exception as e:
-                logging.getLogger(f"root.{__name__}.{decoratorClassName}.{decoratorMethodName}").error(
-                    f"error:\n{str(e)}"
-                )
+                logging.getLogger(
+                    f"root.{__name__}.{decoratorClassName}.{decoratorMethodName}"
+                ).error(f"error:\n{str(e)}")
                 raise Exception(str(e))
 
         return wrapper
@@ -67,7 +67,9 @@ class Wrapper:
                     self.email.testResult[funcName].append("PASSED")
                 except Exception as e:
                     if str(e).replace("'", "") != funcName:
-                        logging.getLogger(f"root.{__name__}.{decoratorClassName}.{decoratorMethodName}").error(
+                        logging.getLogger(
+                            f"root.{__name__}.{decoratorClassName}.{decoratorMethodName}"
+                        ).error(
                             f"class: {self.__class__.__name__}, method: {func.__name__}\n{str(e)}"
                         )
                         isFail = True
@@ -99,18 +101,36 @@ class Wrapper:
                 data = self.gsheet.get_values_by_named_range(worksheetName, named_range)
                 result = []
                 isFail = False
-                emptyFormats = ["", "-", "<blank>", "<empty>", "blank", "empty", "inactive", "uncheck"]
+                emptyFormats = [
+                    "",
+                    "-",
+                    "<blank>",
+                    "<empty>",
+                    "blank",
+                    "empty",
+                    "inactive",
+                    "uncheck",
+                ]
                 anyFormats = ["anything", "dc", "Any", "any"]
                 for row in data:
                     # preprocess data
                     row = [None if (col in emptyFormats) else col for col in row]
-                    row = [FakerGenerator().generate_sentence() if (col in anyFormats) else col for col in row]
-                    
+                    row = [
+                        FakerGenerator().generate_sentence()
+                        if (col in anyFormats)
+                        else col
+                        for col in row
+                    ]
+
                     try:
                         func(self, *row, *args, **kwargs)
-                        result.append(["PASSED", "PASSED" if needExternalCheck else "", ""])
+                        result.append(
+                            ["PASSED", "PASSED" if needExternalCheck else "", ""]
+                        )
                     except Exception as e:
-                        logging.getLogger(f"root.{__name__}.{decoratorClassName}.{decoratorMethodName}").error(
+                        logging.getLogger(
+                            f"root.{__name__}.{decoratorClassName}.{decoratorMethodName}"
+                        ).error(
                             f"class: {self.__class__.__name__}, method: {func.__name__}\n{str(e)}"
                         )
                         # raise Exception(str(e))
@@ -150,9 +170,9 @@ class Wrapper:
                 func(*args, **kwargs)
 
             except Exception as e:
-                logging.getLogger(f"root.{__name__}.{decoratorClassName}.{decoratorMethodName}").error(
-                    f"login error:\n{str(e)}"
-                )
+                logging.getLogger(
+                    f"root.{__name__}.{decoratorClassName}.{decoratorMethodName}"
+                ).error(f"login error:\n{str(e)}")
                 raise Exception(str(e))
 
         return wrapper

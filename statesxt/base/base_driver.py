@@ -21,8 +21,8 @@ from .wait import WaitDriver
 class BaseDriver:
     """Wraps driver and provides all common-used WebDriver actions"""
 
-    def __init__(self, browser, domain, fullscreen=True, duration: int = 27) -> None:
-        self.setup(browser, domain, fullscreen)
+    def __init__(self, browser, fullscreen=True, duration: int = 27) -> None:
+        self.setup(browser, fullscreen)
 
         self.cd = CheckDriver(self.__driver, duration)
         self.fd = FormDriver(self.__driver, duration)
@@ -30,7 +30,7 @@ class BaseDriver:
         self.td = TableDriver(self.__driver, duration)
         self.wd = WaitDriver(self.__driver, duration)
 
-    def setup(self, browser, domain, fullscreen) -> None:
+    def setup(self, browser, fullscreen) -> None:
         """Sets up which browser and domain to use"""
 
         try:
@@ -38,37 +38,32 @@ class BaseDriver:
             start = time.time()
             if browser == "brave":
                 self.__driver = webdriver.Chrome(
-                    service=BraveService(ChromeDriverManager(chrome_type=ChromeType.BRAVE).install())
+                    service=BraveService(
+                        ChromeDriverManager(chrome_type=ChromeType.BRAVE).install()
+                    )
                 )
             elif browser == "chrome":
-                self.__driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+                self.__driver = webdriver.Chrome(
+                    service=ChromeService(ChromeDriverManager().install())
+                )
             elif browser == "edge":
-                self.__driver = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()))
+                self.__driver = webdriver.Edge(
+                    service=EdgeService(EdgeChromiumDriverManager().install())
+                )
             elif browser == "firefox":
-                self.__driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
+                self.__driver = webdriver.Firefox(
+                    service=FirefoxService(GeckoDriverManager().install())
+                )
             end = time.time()
             print(f"\n\nsetting up driver takes {end-start} seconds to complete")
-
-            # setup domain
-            start = time.time()
-            if domain == "test":
-                self.__driver.get("https://belugaboxwebappjptest01.azurewebsites.net/")
-            elif domain == "qa":
-                self.__driver.get("https://belugaboxwebappjpqa01.azurewebsites.net/")
-            elif domain == "azure":
-                self.__driver.get("https://belugabox-webapp-jptest01-mszregplha-an.a.run.app")
-            elif domain == "msys":
-                self.__driver.get("http://34.146.203.204/")
-            end = time.time()
-            print(f"setting up domain takes {end-start} seconds to complete")
 
             # setup screen size
             if fullscreen:
                 self.__driver.maximize_window()
         except Exception as e:
-            logging.getLogger(f"root.{__name__}.{self.__class__.__name__}.{sys._getframe().f_code.co_name}").error(
-                f"in the process of running setup:\n{str(e)}"
-            )
+            logging.getLogger(
+                f"root.{__name__}.{self.__class__.__name__}.{sys._getframe().f_code.co_name}"
+            ).error(f"in the process of running setup:\n{str(e)}")
             raise Exception(str(e))
 
     def navigate(self, url: str) -> None:
