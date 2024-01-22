@@ -1,5 +1,7 @@
-testcases
-+++++++++
+##########
+/testcases
+##########
+
 This folder will mostly contain test scenarios categorized by page. While the rest are fixtures, interfaces, and states.
 
 .. note::

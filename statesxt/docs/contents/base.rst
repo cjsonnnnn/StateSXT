@@ -1,5 +1,7 @@
-base
-++++
+#####
+/base
+#####
+
 This is where all functions related to Selenium capabilities are placed.
 
 .. figure:: /_static/images/uml-base.png

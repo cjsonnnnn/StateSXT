@@ -1,5 +1,7 @@
-pages
-+++++
+######
+/pages
+######
+
 This folder contains other things related to pages, e.g. definition of transitions and methods whose scope is limited to pages only.
 
 

@@ -1,6 +1,9 @@
+############
 Introduction
-++++++++++++
+############
+
 Welcome to the documentation for **StateSXT**! A Python package designed to empower you with efficient and well-structured website testing templates.
+
 
 What is?
 ========
@@ -11,6 +14,7 @@ StateSXT is a Python package that embodies the State Design Pattern, integrating
     * For practical use, the package is hosted on TestPyPI, and you can access it through https://test.pypi.org/project/statesxt/. 
   
     Feel free to explore these resources for the latest details and to make the most of the StateSXT package in your projects.
+
 
 Design Pattern
 ==============

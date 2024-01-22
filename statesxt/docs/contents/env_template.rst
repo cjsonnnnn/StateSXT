@@ -1,6 +1,7 @@
 #############
 .env_template
 #############
+
 This file contains all sensitive parameters that are important for your program to running. Most of the parameters below are about the configurations in order to establish a connection to your database. While the rest parameters are used to send emails, and establish connection to Google Sheet and Google Drive.
 Once, everything set, you should then rename this file to ``.env``.
 
@@ -80,6 +81,7 @@ This variable specifies the name of the Google Sheets file associated with the s
 
 .. note::
     The thing about **signed-in account on the computer** actually is an account service. This account serves as interface for you to communicate with Google Service, e.g. Google Sheets and Google Drive, through the use of APIs. For further information click `here <https://docs.gspread.org/en/v5.10.0/oauth2.html#enable-api-access/>`_.
+
 
 FOLDER_ID
 =========

@@ -1,5 +1,7 @@
-locators
-++++++++
+#########
+/locators
+#########
+
 A locator is a way to identify and locate a specific element on a web page so that actions can be performed on it programmatically. Locators are crucial for automated testing and web scraping.
 
 The main function of this folder is to store all variables that each contains an unique identifier to a web element.
