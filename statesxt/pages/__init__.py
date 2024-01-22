@@ -3,6 +3,8 @@ from abc import ABC, abstractmethod
 
 
 class Page(ABC):
+    """A parent class of all specific page classes."""
+
     def __init__(self, base: BaseDriver) -> None:
         self.__bd = base
         self.jpnFormats = ["jpn", "japan", "japanese", "jp"]

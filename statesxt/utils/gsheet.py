@@ -20,8 +20,8 @@ class GSheet:
         return self.__ss
 
 
-class GSheetBBUI(GSheet):
-    """Class to interact with Google Sheet of BBUI"""
+class GSheetYOURPROJECT(GSheet):
+    """Class to interact with Google Sheet of <YOURPROJECT>"""
 
     scenarioResult = {}
 
@@ -29,16 +29,13 @@ class GSheetBBUI(GSheet):
         self,
         spreadsheetName,
         folderId,
-        usedDomain: str,
         testedFilesOnly=True,
         executeJSON=False,
     ) -> None:
         super().__init__(spreadsheetName)
         self.curDate = dt.now().strftime("%Y/%m/%d %H:%M:%S")
         self.automationName = "Selenium"
-        self.newSpreadsheetName = (
-            f"BBUI Automation - Release {self.curDate} - {usedDomain.upper()}"
-        )
+        self.newSpreadsheetName = f"<YOURPROJECT> Automation - Release {self.curDate}"
         self.__folderId = folderId
         self.__newSs = None
         self.testedFilesOnly = testedFilesOnly

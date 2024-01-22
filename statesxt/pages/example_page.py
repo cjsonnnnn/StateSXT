@@ -3,7 +3,7 @@ from . import Page
 
 
 class ExamplePage(Page):
-    """Analysis Profile Page action methods"""
+    """Example Page action methods"""
 
     def __init__(self, base):
         super().__init__(base)
@@ -24,3 +24,5 @@ class ExamplePage(Page):
 
     def error(self, *args, **kwargs):
         return self.state.error(*args, **kwargs)
+
+    # Other methods specific to this page

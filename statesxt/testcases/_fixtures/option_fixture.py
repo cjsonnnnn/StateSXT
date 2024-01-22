@@ -42,14 +42,12 @@ def pytest_collection_modifyitems(config, items):
     if config.option.number_help:
         print(
             """
-    
-        
-Browser:
-- 1 = brave
-- 2 = chrome
-- 3 = edge
-- 4 = firefox
+        Browser:
+        - 1 = brave
+        - 2 = chrome
+        - 3 = edge
+        - 4 = firefox
 
-"""
+        """
         )
         items.clear()

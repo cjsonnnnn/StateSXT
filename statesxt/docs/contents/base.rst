@@ -54,7 +54,7 @@ Additionally, ``BaseDriver`` also holds some methods,
 .. code-block:: python
 
     def setup(self, browser, fullscreen) -> None:
-        """Sets up which browser and domain to use"""
+        """Sets up which browser to use"""
 
         try:
             # setup driver
@@ -196,7 +196,7 @@ Can be used to check if an element is within the current viewport. This method i
             eAlert = self.wd.invisible(By.CLASS_NAME, "toast-body")
             return True if eAlert else False
 
-It is very often right to see a similar alert component that could appear almost like in every page? The difference is always just the message, or the color. That is why, the above code was made. Also, it is very likely that the method requires you to change it, you need to understand it at least to rename the message, or even maybe to add another configuration, e.g. about color variations.
+It is very often right to see a similar alert component that could appear almost like in every page? The difference is always only in the message, or the color. That is why, the above code was made. Also, it is very likely that the method requires you to change it, you need to understand it at least to rename the message, or even maybe to add another configuration, e.g. about color variations.
 
 ``check_indicator_row``
 -----------------------

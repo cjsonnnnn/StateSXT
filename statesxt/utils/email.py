@@ -14,12 +14,13 @@ class Email(ABC):
         pass
 
 
+# is example child class!
 class EmailScheduler(Email):
     """Class to send all emails related to scheduler test cases"""
 
     context = ssl.create_default_context()
     testResult = {}
-    emailSubject = "Daily BBUI Scheduler Automation Test Report"
+    emailSubject = ""
     emailBody = None
     num_of_successes = None
     num_of_fails = None
@@ -53,7 +54,7 @@ class EmailScheduler(Email):
         self.emailBody = f"""
             Hi {receiverName}-san,
             <br><br>
-            I hope this email finds you well. Attached table is the Selenium Test Automation Report for Daily Scheduler, providing an overview of the test results and performance for our software application.
+            I hope this email finds you well. Attached table is the Selenium Test Automation Report, providing an overview of the test results and performance for our software application.
             <br><br>
             Below is a summary table highlighting the key metrics from the Selenium test suite:
             {

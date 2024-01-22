@@ -3,7 +3,7 @@ from base.wait import MyBy
 
 
 class Locator:
-    """Provides all element locators as well as their actions, and returns the elements."""
+    """A parent class of all page locator classes."""
 
     def __init__(self, base: BaseDriver) -> None:
         self.__bd = base

@@ -31,7 +31,7 @@ class BaseDriver:
         self.wd = WaitDriver(self.__driver, duration)
 
     def setup(self, browser, fullscreen) -> None:
-        """Sets up which browser and domain to use"""
+        """Sets up which browser to use"""
 
         try:
             # setup driver
