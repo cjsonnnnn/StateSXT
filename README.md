@@ -4,22 +4,23 @@
 <br/>
 
 ## How to Install?
-
+There are two approaches to install the package:
 - Manually cloning the project in Github repository: [statesxt](https://github.com/jsonnnnn/statesxt)
 - Using `pip`, that the package is hosted in [here](https://test.pypi.org/project/statesxt/) <b>(recommended)</b>. 
   Currently, due to the Pypi repository being down and is blocking any account registers and project uploads, the package is now hosted on TestPypi for the time being.
   ```
   pip install -i https://test.pypi.org/simple/ statesxt
   ```
+Note: It is always better to install the package in a virtual environment.
 
 
 ## How to Use?
 
-- Generating the framework
+- Generate the template
   ```bash
   statesxt gen
   ```
-- Remove the framework
+- Remove the template
   ```
   statesxt rem
   ```
@@ -27,12 +28,12 @@
 
 ## How to Update?
 
-Currently, the package can't be updated through usual command `pip install --upgrade statesxt`. Probably because is hosted in TestPypi.
+Currently, the package can not be updated through usual command `pip install --upgrade statesxt`. Probably because is hosted in TestPypi.
 So, for the time being, user have to reinstall the package.
 
 
 ## How to Uninstall?
-There are two approaches or options to uninstall the package.
+There are two approaches to uninstall the package:
 - Uninstalling only the package
   ```
   pip uninstall statesxt

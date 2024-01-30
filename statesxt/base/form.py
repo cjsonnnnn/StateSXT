@@ -21,7 +21,6 @@ class FormDriver:
         self.mkd = MouseKeysDriver(driver)
         self.wd = WaitDriver(driver, duration)
 
-    # need decorator (type-A)
     def insert_to_textbox(
         self,
         element: Union[WebElement, Callable[[], WebElement]],
@@ -179,7 +178,6 @@ class FormDriver:
 
             date_input_element.click()
 
-    # need decorator (type-A)
     def select_opt_in_dropdown(
         self,
         element: Union[WebElement, Callable[[], WebElement]],
@@ -199,7 +197,6 @@ class FormDriver:
             elif method == "visible_text":
                 select.select_by_visible_text(option)
 
-    # need decorator (type-A)
     def select_opt_in_radio(
         self,
         elements: Union[list[WebElement], Callable[[], list[WebElement]]],

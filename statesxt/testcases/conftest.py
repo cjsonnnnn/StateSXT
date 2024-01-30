@@ -31,4 +31,3 @@ def setup(request, logger, browser, gsheet, email):
 
     service.end()
     base.exit()
-    # base.driver.quit()

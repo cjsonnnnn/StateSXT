@@ -18,7 +18,6 @@ class MouseKeysDriver:
         self.ac = ActionChains(driver)
         self.__driver = driver
 
-    # need decorator (type-A)
     def hovering(
         self,
         element: Union[WebElement, Callable[[], WebElement]],
@@ -33,7 +32,6 @@ class MouseKeysDriver:
             self.ac.move_to_element(element).perform()
             self.ac.reset_actions()
 
-    # need decorator (type-A)
     def scrolling(
         self,
         element: Union[WebElement, Callable[[], WebElement]] = None,
@@ -65,7 +63,6 @@ class MouseKeysDriver:
                 self.ac.scroll_by_amount(0, steps).pause(sleep).perform()
                 self.ac.reset_actions()
 
-    # need decorator (type-A)
     def clicking(
         self,
         element: Union[WebElement, Callable[[], WebElement]],
