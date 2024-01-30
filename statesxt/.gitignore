@@ -1,20 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,python,virtualenv,git
-# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,python,virtualenv,git
-
-### Git ###
-# Created by git for backups. To disable backups in Git:
-# $ git config --global mergetool.keepBackup false
-*.orig
-
-# Created by git when using merge tools for conflicts
-*.BACKUP.*
-*.BASE.*
-*.LOCAL.*
-*.REMOTE.*
-*_BACKUP_*.txt
-*_BASE_*.txt
-*_LOCAL_*.txt
-*_REMOTE_*.txt
+# Created by https://www.toptal.com/developers/gitignore/api/python,visualstudiocode
+# Edit at https://www.toptal.com/developers/gitignore?templates=python,visualstudiocode
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
@@ -84,6 +69,12 @@ db.sqlite3-journal
 instance/
 .webassets-cache
 
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
 # PyBuilder
 .pybuilder/
 target/
@@ -112,9 +103,7 @@ ipython_config.py
 #   This is especially recommended for binary packages to ensure reproducibility, and is more
 #   commonly ignored for libraries.
 #   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
-# poetry.lock
-# pyproject.toml
-
+#poetry.lock
 
 # pdm
 #   Similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control.
@@ -142,6 +131,8 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+venv-selenium/
+venv-bbui/
 
 # Spyder project settings
 .spyderproject
@@ -184,20 +175,8 @@ poetry.toml
 # LSP config files
 pyrightconfig.json
 
-### VirtualEnv ###
-# Virtualenv
-# http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
-[Bb]in
-[Ii]nclude
-[Ll]ib
-[Ll]ib64
-[Ll]ocal
-[Ss]cripts
-pyvenv.cfg
-pip-selfcheck.json
-
 ### VisualStudioCode ###
-.vscode/
+.vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
@@ -215,7 +194,12 @@ pip-selfcheck.json
 .history
 .ionide
 
-# Sphinx documentation build
-*/docs/_build/
+# developer note files
+test.py
+test1.py
+test2.py
+test3.py
+.vscode
+comments.txt
 
-# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,python,virtualenv,git
+# End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode

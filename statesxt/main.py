@@ -13,7 +13,12 @@ class StateSXT:
             "pages",
             "testcases",
             "utils",
+            "__init__.py",
             ".env-template",
+            "poetry.lock",
+            "pyproject.toml",
+            "pytest.ini",
+            "README.md",
         ]
         self.scriptdir = os.path.dirname(os.path.realpath(__file__))
         self.maindir = os.getcwd()  # Get the current working directory
@@ -102,8 +107,8 @@ class StateSXT:
         parser.add_argument("opt", help="Generate Directories")
 
         args = parser.parse_args()
-        print(f"\n\nargs: {args}")
-        print(f"args.opt: {args.opt}, type: {type(args.opt)}\n\n")
+        # print(f"\n\nargs: {args}")
+        # print(f"args.opt: {args.opt}, type: {type(args.opt)}\n\n")
 
         if str(args.opt).lower() == "gen":
             self.generate()
