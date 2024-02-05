@@ -1,6 +1,6 @@
-+++++++++
+#########
 /database
-+++++++++
+#########
 
 This is where all functions that make the program could connect with database are placed.
 

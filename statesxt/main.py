@@ -13,8 +13,8 @@ class StateSXT:
             "pages",
             "testcases",
             "utils",
-            "__init__.py",
             ".env-template",
+            ".gitignore"
             "poetry.lock",
             "pyproject.toml",
             "pytest.ini",
@@ -107,15 +107,13 @@ class StateSXT:
         parser.add_argument("opt", help="Generate Directories")
 
         args = parser.parse_args()
-        # print(f"\n\nargs: {args}")
-        # print(f"args.opt: {args.opt}, type: {type(args.opt)}\n\n")
 
         if str(args.opt).lower() == "gen":
             self.generate()
         elif str(args.opt).lower() == "rem":
             self.remove()
         else:
-            print("statesxt doesn't has such command.")
+            print("statesxt does not has such command.")
 
 
 def main():

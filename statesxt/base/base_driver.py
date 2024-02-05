@@ -57,6 +57,9 @@ class BaseDriver:
             end = time.time()
             print(f"\n\nsetting up driver takes {end-start} seconds to complete")
 
+            # setup domain
+            self.__driver.get("<Your URL>")
+
             # setup screen size
             if fullscreen:
                 self.__driver.maximize_window()

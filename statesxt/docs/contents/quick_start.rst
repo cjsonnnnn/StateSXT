@@ -1,5 +1,6 @@
+###########
 Quick Start
-+++++++++++
+###########
 
 This section covers steps for installation and a guide on how to use.
 

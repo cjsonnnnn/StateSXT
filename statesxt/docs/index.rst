@@ -24,3 +24,8 @@ Welcome to StateSXT's documentation!
    contents/testcases
    contents/utils
    contents/env_template
+   contents/gitignore
+   contents/poetry-lock
+   contents/pyproject-toml
+   contents/pytest-ini
+   contents/README-md
