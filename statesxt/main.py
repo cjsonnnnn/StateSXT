@@ -14,7 +14,7 @@ class StateSXT:
             "testcases",
             "utils",
             ".env-template",
-            ".gitignore"
+            ".gitignore",
             "poetry.lock",
             "pyproject.toml",
             "pytest.ini",
