@@ -1,4 +1,5 @@
-from statesxt.locators.example_locator import ExampleLocator
+from testcases._states.example_states.ls001 import ExampleInitState
+from locators.example_locator import ExampleLocator
 from . import Page
 
 
@@ -7,22 +8,15 @@ class ExamplePage(Page):
 
     def __init__(self, base):
         super().__init__(base)
+        self.initState = ExampleInitState(base, self)
+        self.state = self.initState
         self.lr = ExampleLocator(base)
 
     # Interface Methods
     def changeState(self, newState):
         self.state = newState
 
-    def clickLogin(self, *args, **kwargs):
-        return self.state.clickLogin(*args, **kwargs)
-
     def changeLanguage(self, *args, **kwargs):
         return self.state.changeLanguage(*args, **kwargs)
-
-    def success(self, *args, **kwargs):
-        return self.state.success(*args, **kwargs)
-
-    def error(self, *args, **kwargs):
-        return self.state.error(*args, **kwargs)
 
     # Other methods specific to this page

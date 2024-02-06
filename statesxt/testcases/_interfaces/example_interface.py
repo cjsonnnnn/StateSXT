@@ -12,14 +12,5 @@ class ExampleInterface(StateInterface, ABC):
         super().__init__(base)
         self.ep = contextPage
 
-    def clickExample(self, *args, **kwargs):
-        pass
-
     def changeLanguage(self, *args, **kwargs):
-        pass
-
-    def success(self, *args, **kwargs):
-        pass
-
-    def error(self, *args, **kwargs):
         pass

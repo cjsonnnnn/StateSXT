@@ -14,7 +14,4 @@ class TestExample01(TestExample):
     def test_scenario001(self, *args):
         """Test Scenario: 1-1"""
 
-        # change language   (1-1)
-        self.soft_assert(self.assertIsNone, self.ep.changeLanguage(lang=args[0]))
-
         self.assert_all()

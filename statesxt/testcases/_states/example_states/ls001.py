@@ -1,7 +1,7 @@
 from ..._interfaces.example_interface import ExampleInterface
 
 
-class ExamplePageState(ExampleInterface):
+class ExampleInitState(ExampleInterface):
     def __init__(self, base, contextPage) -> None:
         super().__init__(base, contextPage)
 
@@ -12,4 +12,4 @@ class ExamplePageState(ExampleInterface):
         elif lang in self.ep.engFormats:
             self.bd.mkd.clicking(self.ep.lr.ENG_FLAG_BUTTON(), sleep=0)
         # transition
-        self.ep.changeState(ExamplePageState(self.bd, self.ep))
+        self.ep.changeState(ExampleInitState(self.bd, self.ep))
