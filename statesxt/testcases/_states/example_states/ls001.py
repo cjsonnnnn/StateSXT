@@ -7,9 +7,9 @@ class ExampleInitState(ExampleInterface):
 
     def changeLanguage(self, lang):
         # required process
-        if lang in self.ep.jpnFormats:
-            self.bd.mkd.clicking(self.ep.lr.JPN_FLAG_BUTTON(), sleep=0)
-        elif lang in self.ep.engFormats:
-            self.bd.mkd.clicking(self.ep.lr.ENG_FLAG_BUTTON(), sleep=0)
+        if lang in self.cp.jpnFormats:
+            self.bd.mkd.clicking(self.cp.lr.JPN_FLAG_BUTTON(), sleep=0)
+        elif lang in self.cp.engFormats:
+            self.bd.mkd.clicking(self.cp.lr.ENG_FLAG_BUTTON(), sleep=0)
         # transition
-        self.ep.changeState(ExampleInitState(self.bd, self.ep))
+        self.cp.changeState(ExampleInitState(self.bd, self.cp))

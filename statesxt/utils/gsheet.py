@@ -93,10 +93,10 @@ class GSheetYOURPROJECT(GSheet):
         # create a new file (the duplicate of the target file)
         self.create_a_copy_of_gsheet_file()
 
-        data = self.get_json()
+        data = self.scenarioResult
         if not useJSON:
+            data = self.get_json()
             self.save_data_to_json()
-            data = self.scenarioResult
         for worksheetName in data:
             for namedRange in data[worksheetName]:
                 values = [

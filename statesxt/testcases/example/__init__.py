@@ -11,4 +11,4 @@ class TestExample(softest.TestCase):
 
     @pytest.fixture(autouse=True)
     def class_setup(self):
-        self.ep = ExamplePage(self.base)
+        self.p = ExamplePage(self.base)

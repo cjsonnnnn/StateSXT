@@ -15,6 +15,8 @@ class StateSXT:
             "utils",
             ".env-template",
             ".gitignore",
+            "execute_json.py",
+            "last_run_data.json",
             "poetry.lock",
             "pyproject.toml",
             "pytest.ini",

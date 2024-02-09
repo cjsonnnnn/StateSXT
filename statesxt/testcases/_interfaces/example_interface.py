@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 class ExampleInterface(StateInterface, ABC):
     def __init__(self, base, contextPage: "ExamplePage") -> None:
         super().__init__(base)
-        self.ep = contextPage
+        self.cp = contextPage
 
     def changeLanguage(self, *args, **kwargs):
         pass
