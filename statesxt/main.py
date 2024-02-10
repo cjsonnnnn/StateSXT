@@ -7,6 +7,7 @@ import os
 class StateSXT:
     def __init__(self) -> None:
         self.tree = [
+            ".github",
             "base",
             "database",
             "locators",
@@ -20,6 +21,7 @@ class StateSXT:
             "pyproject.toml",
             "pytest.ini",
             "README.md",
+            "tox.ini",
         ]
         self.scriptdir = os.path.dirname(os.path.realpath(__file__))
         self.maindir = os.getcwd()  # Get the current working directory
