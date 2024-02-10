@@ -30,12 +30,8 @@ class CheckDriver:
             # since there are cases where the element is in progress to get into the viewport, e.g. scrolling, so then this loop is used to give such chances
             for i in range(7):
                 # viewport attr
-                viewport_height = self.__driver.execute_script(
-                    "return window.innerHeight;"
-                )
-                viewport_top = self.__driver.execute_script(
-                    "return window.pageYOffset;"
-                )
+                viewport_height = self.__driver.execute_script("return window.innerHeight;")
+                viewport_top = self.__driver.execute_script("return window.pageYOffset;")
                 viewport_bottom = viewport_top + viewport_height
 
                 # target element attr
@@ -49,9 +45,7 @@ class CheckDriver:
                 time.sleep(0.7)
         return False
 
-    def check_alert(
-        self, isSuccess: bool, isVisible: bool, cust_message: str = None
-    ) -> bool:
+    def check_alert(self, isSuccess: bool, isVisible: bool, cust_message: str = None) -> bool:
         """
         Checks the presence of alert element
 
@@ -95,9 +89,7 @@ class CheckDriver:
 
         def get_data_of_a_row(row: WebElement):
             tds = row.find_elements(By.TAG_NAME, "td")
-            return [
-                tds[i].text for i in range(4)
-            ]  # 4 are name, indicator, logic, and threshold value
+            return [tds[i].text for i in range(4)]  # 4 are name, indicator, logic, and threshold value
 
         for row in available_rows:
             self.mkd.scrolling(element=row)

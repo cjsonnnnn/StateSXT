@@ -1,6 +1,6 @@
 # statesxt
 
-
+![Tests](https://github.com/cjsonnnnn/statesxt/actions/workflows/tests.yml/badge.svg)
 <br/>
 
 ## How to Install?

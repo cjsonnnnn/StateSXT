@@ -11,7 +11,7 @@ import time
 
 class MouseKeysDriver:
     """
-    Provides Mouse and Keys capabilities. 
+    Provides Mouse and Keys capabilities.
     """
 
     def __init__(self, driver: WebDriver) -> None:
@@ -146,9 +146,7 @@ class MouseKeysDriver:
         occur = 0
         while occur < 1:
             # check whether or not the condition is ready to stop
-            if (
-                ("previous page" not in titles) if (direction == "backward") else ("next page" not in titles)
-            ):  # when in page item-1
+            if ("previous page" not in titles) if (direction == "backward") else ("next page" not in titles):  # when in page item-1
                 occur += 1
             # check current page's rows
             time.sleep(sleep)
@@ -157,8 +155,6 @@ class MouseKeysDriver:
             # forwarding / backwarding (depends on the direction)
             if occur != 1:
                 pns, titles = (
-                    click_page_number(title="previous page", pns=pns, titles=titles)
-                    if (direction == "backward")
-                    else click_page_number(title="next page", pns=pns, titles=titles)
+                    click_page_number(title="previous page", pns=pns, titles=titles) if (direction == "backward") else click_page_number(title="next page", pns=pns, titles=titles)
                 )
         return False if tobeFound else True

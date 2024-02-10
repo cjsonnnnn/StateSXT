@@ -5,12 +5,13 @@ from selenium.webdriver.common.by import By
 
 from utils.wrapper import Wrapper
 
+
 class MyBy:
     """
     Provides keys that each links to an 'By' object.
     The purpose is to have control to By objects name.
-    
-    For example: 
+
+    For example:
     If we want to rename one of the keys, that can be done by renaming it just in here.
     Of course do not forget to use F2 before renaming it, so it applies to all references.
     """

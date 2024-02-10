@@ -37,23 +37,13 @@ class BaseDriver:
             # setup driver
             start = time.time()
             if browser == "brave":
-                self.__driver = webdriver.Chrome(
-                    service=BraveService(
-                        ChromeDriverManager(chrome_type=ChromeType.BRAVE).install()
-                    )
-                )
+                self.__driver = webdriver.Chrome(service=BraveService(ChromeDriverManager(chrome_type=ChromeType.BRAVE).install()))
             elif browser == "chrome":
-                self.__driver = webdriver.Chrome(
-                    service=ChromeService(ChromeDriverManager().install())
-                )
+                self.__driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
             elif browser == "edge":
-                self.__driver = webdriver.Edge(
-                    service=EdgeService(EdgeChromiumDriverManager().install())
-                )
+                self.__driver = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()))
             elif browser == "firefox":
-                self.__driver = webdriver.Firefox(
-                    service=FirefoxService(GeckoDriverManager().install())
-                )
+                self.__driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
             end = time.time()
             print(f"\n\nsetting up driver takes {end-start} seconds to complete")
 
@@ -64,9 +54,7 @@ class BaseDriver:
             if fullscreen:
                 self.__driver.maximize_window()
         except Exception as e:
-            logging.getLogger(
-                f"root.{__name__}.{self.__class__.__name__}.{sys._getframe().f_code.co_name}"
-            ).error(f"in the process of running setup:\n{str(e)}")
+            logging.getLogger(f"root.{__name__}.{self.__class__.__name__}.{sys._getframe().f_code.co_name}").error(f"in the process of running setup:\n{str(e)}")
             raise Exception(str(e))
 
     def navigate(self, url: str) -> None:

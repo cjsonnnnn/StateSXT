@@ -17,7 +17,6 @@ class StateSXT:
             ".gitignore",
             "execute_json.py",
             "last_run_data.json",
-            "poetry.lock",
             "pyproject.toml",
             "pytest.ini",
             "README.md",
@@ -62,17 +61,13 @@ class StateSXT:
                 )
 
         if rate == len(self.tree):
-            print(
-                f"\n{self.ansi['success']}All templates created in: {self.ansi['bold']}{self.maindir}{self.ansi['reset']}\n"
-            )
+            print(f"\n{self.ansi['success']}All templates created in: {self.ansi['bold']}{self.maindir}{self.ansi['reset']}\n")
         elif rate > 1:
             print(
                 f"\n{self.ansi['success']}{rate} template/-s created in: {self.ansi['bold']}{self.maindir}{self.ansi['warn']}, but {len(self.tree)-rate} failed.{self.ansi['reset']}\n"
             )
         else:
-            print(
-                f"\n{self.ansi['warn']}All templates failed to create in: {self.ansi['bold']}{self.maindir}{self.ansi['reset']}\n"
-            )
+            print(f"\n{self.ansi['warn']}All templates failed to create in: {self.ansi['bold']}{self.maindir}{self.ansi['reset']}\n")
 
     def remove(self):
         rate = 0
@@ -92,17 +87,13 @@ class StateSXT:
                 )
 
         if rate == len(self.tree):
-            print(
-                f"\n{self.ansi['success']}All templates removed from: {self.ansi['bold']}{self.maindir}{self.ansi['reset']}\n"
-            )
+            print(f"\n{self.ansi['success']}All templates removed from: {self.ansi['bold']}{self.maindir}{self.ansi['reset']}\n")
         elif rate > 1:
             print(
                 f"\n{self.ansi['success']}{rate} template/-s removed from: {self.ansi['bold']}{self.maindir}{self.ansi['warn']}, but {len(self.tree)-rate} failed.{self.ansi['reset']}\n"
             )
         else:
-            print(
-                f"\n{self.ansi['warn']}All templates failed to remove from: {self.ansi['bold']}{self.maindir}{self.ansi['reset']}\n"
-            )
+            print(f"\n{self.ansi['warn']}All templates failed to remove from: {self.ansi['bold']}{self.maindir}{self.ansi['reset']}\n")
 
     def cli(self):
         parser = argparse.ArgumentParser(description="Generate Directories")

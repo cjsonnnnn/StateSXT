@@ -57,21 +57,16 @@ class TableDriver:
             if i not in ignored_table_rows_to_hover:
                 for j in range(len(cols)):
                     if (hint_table) and (j not in ignored_table_columns_to_hover):
-                        temp[column_names[j]] = [
-                            self.ft.convert_number(s.replace("%", "").strip("'"))
-                            for s in repr(cols[j].text).split("\\n")
-                        ] + [self.get_data_on_hint(cols[j], hint_table, hint_header, ignored_hint_columns)]
+                        temp[column_names[j]] = [self.ft.convert_number(s.replace("%", "").strip("'")) for s in repr(cols[j].text).split("\\n")] + [
+                            self.get_data_on_hint(cols[j], hint_table, hint_header, ignored_hint_columns)
+                        ]
                         continue
                     if j in attribute:
-                        temp[column_names[j]] = [
-                            self.ft.convert_number(s.replace("%", "").strip("'")) if (s != "''") else None
-                            for s in repr(cols[j].text).split("\\n")
-                        ] + [self.get_attribute(cols[j], option=["color"])]
+                        temp[column_names[j]] = [self.ft.convert_number(s.replace("%", "").strip("'")) if (s != "''") else None for s in repr(cols[j].text).split("\\n")] + [
+                            self.get_attribute(cols[j], option=["color"])
+                        ]
                         continue
-                    temp[column_names[j]] = [
-                        self.ft.convert_number(s.replace("%", "").strip("'")) if (s != "''") else None
-                        for s in repr(cols[j].text).split("\\n")
-                    ]
+                    temp[column_names[j]] = [self.ft.convert_number(s.replace("%", "").strip("'")) if (s != "''") else None for s in repr(cols[j].text).split("\\n")]
                 data.append(temp)
 
         return data

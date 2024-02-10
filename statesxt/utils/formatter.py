@@ -6,9 +6,7 @@ import re
 class Formatter:
     """Converting values into desired format result"""
 
-    def convert_query_result(
-        self, query_result, rounding_columns=None, rounding_option=None, toList=False
-    ):
+    def convert_query_result(self, query_result, rounding_columns=None, rounding_option=None, toList=False):
         result = []
 
         # converting result to both decimal and datetime if it's possible
@@ -50,15 +48,9 @@ class Formatter:
 
         if len(strNumber):
             checkedStrNumber = strNumber.replace(".", "", 1)
-            checkedStrNumber = (
-                checkedStrNumber.replace("-", "", 1)
-                if checkedStrNumber[0] == "-"
-                else checkedStrNumber
-            )
+            checkedStrNumber = checkedStrNumber.replace("-", "", 1) if checkedStrNumber[0] == "-" else checkedStrNumber
             if checkedStrNumber.isdigit():
-                strNumber = (
-                    round(float(strNumber), 1) if "." in strNumber else int(strNumber)
-                )
+                strNumber = round(float(strNumber), 1) if "." in strNumber else int(strNumber)
         return strNumber
 
     def rounding(self, query_result, column_names, option):
@@ -92,10 +84,7 @@ class Formatter:
             [[2023, 6, 15], [2023, 6, 6]]
         """
 
-        return [
-            [int(_) if _ != "" else _ for _ in date.split("/")]
-            for date in period.split(" - ")
-        ]
+        return [[int(_) if _ != "" else _ for _ in date.split("/")] for date in period.split(" - ")]
 
     def re_sub(self, pattern, string):
         return re.sub(pattern, "", string).strip()

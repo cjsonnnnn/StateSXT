@@ -25,18 +25,14 @@ class EmailScheduler(Email):
     num_of_successes = None
     num_of_fails = None
 
-    def __init__(
-        self, sender_email, sender_password, receiver_email, receiver_name
-    ) -> None:
+    def __init__(self, sender_email, sender_password, receiver_email, receiver_name) -> None:
         self.__senderEmail = sender_email
         self.__senderPassword = sender_password
         self.__receiverEmail = receiver_email
         self.__receiverName = receiver_name
 
     def calculateFailsSuccesses(self):
-        self.num_of_successes = len(
-            list(filter(lambda x: self.testResult[x][-1] == "PASSED", self.testResult))
-        )
+        self.num_of_successes = len(list(filter(lambda x: self.testResult[x][-1] == "PASSED", self.testResult)))
         self.num_of_fails = len(self.testResult) - self.num_of_successes
 
     def generateEmailSubject(self):
@@ -71,9 +67,7 @@ class EmailScheduler(Email):
 
     def send(self):
         if len(self.__receiverName) == len(self.__receiverEmail):
-            for receiverName, receiverEmail in zip(
-                self.__receiverName, self.__receiverEmail
-            ):
+            for receiverName, receiverEmail in zip(self.__receiverName, self.__receiverEmail):
                 # create an email object
                 lib = EmailMessage()
 
@@ -88,13 +82,9 @@ class EmailScheduler(Email):
                 lib.add_alternative(self.emailBody, subtype="html")
 
                 # send email
-                with smtplib.SMTP_SSL(
-                    "smtp.gmail.com", 465, context=self.context
-                ) as smtp:
+                with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=self.context) as smtp:
                     smtp.login(self.__senderEmail, self.__senderPassword)
                     smtp.send_message(lib)
                     smtp.close()
         else:
-            raise Exception(
-                "number of receiverName does not fit with the number of receiverEmail"
-            )
+            raise Exception("number of receiverName does not fit with the number of receiverEmail")

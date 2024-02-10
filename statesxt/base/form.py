@@ -48,11 +48,7 @@ class FormDriver:
                 element = element()
             if onFocus:
                 self.mkd.scrolling(element)
-            self.ac.pause(sleep).click(element).send_keys(Keys.END).key_down(
-                Keys.SHIFT
-            ).send_keys(Keys.HOME).key_up(Keys.SHIFT).send_keys(
-                Keys.BACKSPACE
-            ).send_keys(
+            self.ac.pause(sleep).click(element).send_keys(Keys.END).key_down(Keys.SHIFT).send_keys(Keys.HOME).key_up(Keys.SHIFT).send_keys(Keys.BACKSPACE).send_keys(
                 input
             ).perform()
 
@@ -102,12 +98,8 @@ class FormDriver:
             date_input_element.click()
 
             # provide prev and next month button
-            click_prev = lambda: self.wd.wdw.until(
-                lambda d: date_input_element.find_element(By.XPATH, prev_button_locator)
-            ).click()
-            click_next = lambda: self.wd.wdw.until(
-                lambda d: date_input_element.find_element(By.XPATH, next_button_locator)
-            ).click()
+            click_prev = lambda: self.wd.wdw.until(lambda d: date_input_element.find_element(By.XPATH, prev_button_locator)).click()
+            click_next = lambda: self.wd.wdw.until(lambda d: date_input_element.find_element(By.XPATH, next_button_locator)).click()
 
             def prev_and_next(num_of_clicks: int):
                 if num_of_clicks > 0:
@@ -118,9 +110,7 @@ class FormDriver:
                         click_prev()
 
             def select_date(selected_date: str):
-                week_elements = self.wd.all_elements(
-                    By.CLASS_NAME, date_per_week_locator
-                )
+                week_elements = self.wd.all_elements(By.CLASS_NAME, date_per_week_locator)
                 day_elements = self.wd.all_elements(By.CLASS_NAME, date_per_day_locator)
                 day_elements_per_week = []
                 for i in range(len(week_elements)):
@@ -131,9 +121,7 @@ class FormDriver:
                 num_of_weeks = len(day_elements_per_week)
                 for i in range(num_of_weeks):
                     for date in day_elements_per_week[i]:
-                        if (i == 0 and int(date.text) > 7) or (
-                            i == num_of_weeks and int(date.text) < 20
-                        ):
+                        if (i == 0 and int(date.text) > 7) or (i == num_of_weeks and int(date.text) < 20):
                             continue
                         if date.text == selected_date:
                             date.click()
@@ -143,9 +131,7 @@ class FormDriver:
                         break
 
             # get current date
-            date_header = self.wd.wdw.until(
-                lambda d: date_input_element.find_element(By.XPATH, date_header_locator)
-            ).text.split()
+            date_header = self.wd.wdw.until(lambda d: date_input_element.find_element(By.XPATH, date_header_locator)).text.split()
             cur_month = int(datetime.strptime(date_header[0], "%B").month)
             cur_year = int(date_header[1])
 
