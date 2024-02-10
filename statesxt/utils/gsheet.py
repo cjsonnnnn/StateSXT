@@ -20,8 +20,8 @@ class GSheet:
         return self.__ss
 
 
-class GSheetYOURPROJECT(GSheet):
-    """Class to interact with Google Sheet of <YOURPROJECT>"""
+class GSheetStateSXT(GSheet):
+    """Class to interact with Google Sheet specific to the SPREADSHEET_NAME"""
 
     scenarioResult = {}
 
@@ -40,7 +40,7 @@ class GSheetYOURPROJECT(GSheet):
         self.__newSs = None
         self.testedFilesOnly = testedFilesOnly
         self.executeJSON = executeJSON
-        self.json_path = "last_run_data.json"
+        self.json_path = "track.json"
 
     def create_a_copy_of_worksheet_into_new_gsheet_file_and_update_the_values(self, worksheetName, namedRange, values):
         try:  # assuming that the gsheet has already a worksheet with paramater name

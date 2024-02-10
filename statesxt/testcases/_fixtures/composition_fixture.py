@@ -2,7 +2,7 @@ import pytest
 import os
 
 from utils.email import EmailScheduler
-from utils.gsheet import GSheetYOURPROJECT
+from utils.gsheet import GSheetStateSXT
 from utils.logger import Logger
 
 
@@ -21,7 +21,7 @@ def gsheet(request, use_gsheet, tfo):
     if "scheduler" in usedMarkers:
         yield None
         return
-    gsheet_bbui = GSheetYOURPROJECT(
+    gsheet_bbui = GSheetStateSXT(
         spreadsheetName=os.getenv("SPREADSHEET_NAME"),
         folderId=os.getenv("FOLDER_ID"),
         testedFilesOnly=False if (tfo == "0") else True,

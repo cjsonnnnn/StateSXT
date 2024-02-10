@@ -5,7 +5,7 @@ with open("README.md", encoding="utf8") as file:
 
 setuptools.setup(
     name="statesxt",
-    version="0.2.7",
+    version="0.2.8",
     description="A project template for testing your website application.",
     long_description=LONG_DESC,
     long_description_content_type="text/markdown",
@@ -40,7 +40,7 @@ setuptools.setup(
         "Testing",
         "Framework",
     ],
-    python_requires=">=3.10, <3.12",
+    python_requires=">=3.10",
     packages=setuptools.find_packages(),
     include_package_data=True,
     setup_requires=["setuptools-git"],

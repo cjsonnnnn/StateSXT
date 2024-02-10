@@ -109,7 +109,7 @@ class Wrapper:
                 for row in data:
                     # preprocess data
                     row = [None if (col in emptyFormats) else col for col in row]
-                    row = [FakerGenerator().generate_sentence() if (col in anyFormats) else col for col in row]
+                    row = [(FakerGenerator().generate_sentence() if (col in anyFormats) else col) for col in row]
 
                     try:
                         func(self, *row, *args, **kwargs)

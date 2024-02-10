@@ -62,11 +62,11 @@ class TableDriver:
                         ]
                         continue
                     if j in attribute:
-                        temp[column_names[j]] = [self.ft.convert_number(s.replace("%", "").strip("'")) if (s != "''") else None for s in repr(cols[j].text).split("\\n")] + [
+                        temp[column_names[j]] = [(self.ft.convert_number(s.replace("%", "").strip("'")) if (s != "''") else None) for s in repr(cols[j].text).split("\\n")] + [
                             self.get_attribute(cols[j], option=["color"])
                         ]
                         continue
-                    temp[column_names[j]] = [self.ft.convert_number(s.replace("%", "").strip("'")) if (s != "''") else None for s in repr(cols[j].text).split("\\n")]
+                    temp[column_names[j]] = [(self.ft.convert_number(s.replace("%", "").strip("'")) if (s != "''") else None) for s in repr(cols[j].text).split("\\n")]
                 data.append(temp)
 
         return data

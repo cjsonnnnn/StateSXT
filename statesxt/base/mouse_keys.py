@@ -57,7 +57,10 @@ class MouseKeysDriver:
                     self.ac.scroll_by_amount(0, steps).pause(sleep).perform()
                     self.__driver.execute_script("arguments[0].scrollIntoView();", element)
                 else:
-                    self.__driver.execute_script("arguments[0].scrollIntoView({block: '" + block + "'});", element)
+                    self.__driver.execute_script(
+                        "arguments[0].scrollIntoView({block: '" + block + "'});",
+                        element,
+                    )
                     time.sleep(sleep)
             else:
                 self.ac.scroll_by_amount(0, steps).pause(sleep).perform()

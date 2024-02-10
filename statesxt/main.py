@@ -16,7 +16,7 @@ class StateSXT:
             ".env-template",
             ".gitignore",
             "execute_json.py",
-            "last_run_data.json",
+            "track.json",
             "pyproject.toml",
             "pytest.ini",
             "README.md",

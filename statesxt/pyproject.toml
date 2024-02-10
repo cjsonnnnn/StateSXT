@@ -4,7 +4,7 @@ line-length = 180
 name = "statesxt"
 version = "0.1.0"
 description = ""
-authors = ["FOS-Intern <intern@fata-organa.com>"]
+authors = ["jsonnnnn <cjsonnnnn@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]

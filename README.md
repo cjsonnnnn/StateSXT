@@ -1,6 +1,6 @@
 # statesxt
 
-![Tests](https://github.com/cjsonnnnn/statesxt/actions/workflows/tests.yml/badge.svg)
+![Tests](https://github.com/cjsonnnnn/statesxt/actions/workflows/test.yml/badge.svg)
 <br/>
 
 ## How to Install?
@@ -48,3 +48,7 @@ There are two approaches to uninstall the package:
   pip-autoremove statesxt -y
   ```
   Note: If there is an error saying that `ModuleNotFoundError: No module named 'pip_autoremove'`, you could try to move the `pip_autoremove.py` file from `./Scripts` into `./Lib` instead. For further information: [here](https://stackoverflow.com/questions/74523001/modulenotfounderror-when-trying-to-use-pip-autoremove).
+
+
+## How to Test?
+There is a tox.ini file inside .\statesxt\, where you can just execute it by invoking `tox -c .\statesxt\` in terminal. But anyway, that is to test manually in your local, meanwhile there is .github\ that enables to testing with Github Actions, where it works by triggering the execution of `tox.ini` once you make a commit. So basically, it has implemented CI/CD. 

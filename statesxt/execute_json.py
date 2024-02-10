@@ -1,10 +1,10 @@
-from utils.gsheet import GSheetBBUI
+from utils.gsheet import GSheetStateSXT
 from dotenv import load_dotenv
 import os
 
 
 def run():
-    gsheet_bbui = GSheetBBUI(
+    gsheet_bbui = GSheetStateSXT(
         spreadsheetName=os.getenv("SPREADSHEET_NAME"),
         folderId=os.getenv("FOLDER_ID"),
         executeJSON=True,
@@ -19,7 +19,7 @@ def run():
 
 if __name__ == "__main__":
     """
-    Basically this file is purposed to execute the last_run_data.json file (located on root), which contains the test result of the last test execution. This action is taken regarding to avoid 2 main problems, i.e. request limit and unexpected error during the gsheet upgrade process.
+    Basically this file is purposed to execute the track.json file (located on root), which contains the test result of the last test execution. This action is taken regarding to avoid 2 main problems, i.e. request limit and unexpected error during the gsheet upgrade process.
     """
 
     load_dotenv()
