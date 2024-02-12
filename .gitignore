@@ -219,4 +219,7 @@ pip-selfcheck.json
 # Sphinx documentation build
 */docs/_build/
 
+# dev
+my-test*
+
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,python,virtualenv,git

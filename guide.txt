@@ -1,6 +1,6 @@
 # build
-# - py setup.py sdist bdist_wheel
 # - py -m build
+# - py setup.py sdist bdist_wheel
 
 # publish
 # py -m twine upload --repository testpypi dist/*
