@@ -1,6 +1,6 @@
-from testcases._states.example_states.ls001 import ExampleInitState
-from locators.example_locator import ExampleLocator
-from . import Page
+from states.ls001 import ExampleInitState
+from .locator import ExampleLocator
+from .. import Page
 
 
 class ExamplePage(Page):

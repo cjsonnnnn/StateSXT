@@ -1,7 +1,7 @@
 import pytest
 import softest
 
-from pages.example_page import ExamplePage
+from ..page import ExamplePage
 
 
 @pytest.mark.order(1)

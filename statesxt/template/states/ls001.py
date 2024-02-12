@@ -1,4 +1,4 @@
-from ..._interfaces.example_interface import ExampleInterface
+from ..interface import ExampleInterface
 
 
 class ExampleInitState(ExampleInterface):

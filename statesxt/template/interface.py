@@ -1,10 +1,10 @@
-from . import StateInterface
+from .. import StateInterface
 
 from abc import ABC
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from pages.example_page import ExamplePage
+    from .page import ExamplePage
 
 
 class ExampleInterface(StateInterface, ABC):

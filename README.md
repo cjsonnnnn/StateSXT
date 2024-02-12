@@ -24,6 +24,10 @@ There are two approaches to install the package:
   ``` console
   statesxt rem
   ```
+- Generate the page template
+  ``` console
+  statesxt page
+  ```
 
 
 ## How to Update?
@@ -52,3 +56,7 @@ There are two approaches to uninstall the package:
 
 ## How to Test?
 There is a tox.ini file inside .\statesxt\, where you can just execute it by invoking `tox -c .\statesxt\` in terminal. But anyway, that is to test manually in your local, meanwhile there is .github\ that enables to testing with Github Actions, where it works by triggering the execution of `tox.ini` once you make a commit. So basically, it has implemented CI/CD. 
+
+
+## License
+This project is licensed under the [MIT License](https://github.com/cjsonnnnn/statesxt?tab=MIT-1-ov-file).

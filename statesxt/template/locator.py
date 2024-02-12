@@ -1,4 +1,4 @@
-from . import Locator
+from .. import Locator
 
 
 class ExampleLocator(Locator):

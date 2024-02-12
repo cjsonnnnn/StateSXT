@@ -1,7 +1,7 @@
 import pytest
 
 from utils.wrapper import Wrapper
-from . import TestExample
+from .. import TestExample
 
 
 @pytest.mark.dev

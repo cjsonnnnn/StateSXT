@@ -10,8 +10,6 @@ class StateSXT:
             ".github",
             "base",
             "database",
-            "locators",
-            "pages",
             "testcases",
             "utils",
             ".env-template",
@@ -26,11 +24,13 @@ class StateSXT:
         self.scriptdir = os.path.dirname(os.path.realpath(__file__))
         self.maindir = os.getcwd()  # Get the current working directory
         self.ansi = {
-            "warn": "\u001b[33m",
+            "error": "\033[91m\033[1m",
+            "info": "\033[94m",
             "success": "\u001b[32m",
+            "warn": "\u001b[33m",
             "bold": "\033[1m",
-            "underline": "\033[4m",
             "reset": "\033[0m",
+            "underline": "\033[4m",
         }
 
     def generate(self):
@@ -63,13 +63,13 @@ class StateSXT:
                 )
 
         if rate == len(self.tree):
-            print(f"\n{self.ansi['success']}All templates created in: {self.ansi['bold']}{self.maindir}{self.ansi['reset']}\n")
+            print(f"\n{self.ansi['success']}All templates created in {self.ansi['bold']}{self.maindir}{self.ansi['reset']}")
         elif rate > 1:
             print(
-                f"\n{self.ansi['success']}{rate} template/-s created in: {self.ansi['bold']}{self.maindir}{self.ansi['warn']}, but {len(self.tree)-rate} failed.{self.ansi['reset']}\n"
+                f"\n{self.ansi['success']}{rate} template/-s created in {self.ansi['bold']}{self.maindir}{self.ansi['warn']}, but {len(self.tree)-rate} failed.{self.ansi['reset']}"
             )
         else:
-            print(f"\n{self.ansi['warn']}All templates failed to create in: {self.ansi['bold']}{self.maindir}{self.ansi['reset']}\n")
+            print(f"\n{self.ansi['warn']}All templates failed to create in {self.ansi['bold']}{self.maindir}{self.ansi['reset']}")
 
     def remove(self):
         rate = 0
@@ -89,24 +89,64 @@ class StateSXT:
                 )
 
         if rate == len(self.tree):
-            print(f"\n{self.ansi['success']}All templates removed from: {self.ansi['bold']}{self.maindir}{self.ansi['reset']}\n")
+            print(f"\n{self.ansi['success']}All templates removed from: {self.ansi['bold']}{self.maindir}{self.ansi['reset']}")
         elif rate > 1:
             print(
-                f"\n{self.ansi['success']}{rate} template/-s removed from: {self.ansi['bold']}{self.maindir}{self.ansi['warn']}, but {len(self.tree)-rate} failed.{self.ansi['reset']}\n"
+                f"\n{self.ansi['success']}{rate} template/-s removed from: {self.ansi['bold']}{self.maindir}{self.ansi['warn']}, but {len(self.tree)-rate} failed.{self.ansi['reset']}"
             )
         else:
-            print(f"\n{self.ansi['warn']}All templates failed to remove from: {self.ansi['bold']}{self.maindir}{self.ansi['reset']}\n")
+            print(f"\n{self.ansi['warn']}All templates failed to remove from: {self.ansi['bold']}{self.maindir}{self.ansi['reset']}")
+
+    def page(self, page_name: str):
+        # check if the parent folder exists
+        parent_folder = "testcases"
+        if os.path.exists(os.path.join(self.maindir, parent_folder)):
+            # check if a folder with name as the inputted page name does not exist
+            if not os.path.exists(os.path.join(self.maindir, f"{parent_folder}/{page_name}")):
+                # Get the path to the template folder
+                template_folder = os.path.join(self.scriptdir, "template")
+
+                # Define the destination folder based on the page name
+                destpath = os.path.join(self.maindir, f"{parent_folder}\{page_name.lower().replace(' ', '_')}")
+
+                # Copy the template folder to the destination
+                shutil.copytree(template_folder, destpath)
+
+                # Rename files inside the copied folder and modify their content
+                for root, dirs, files in os.walk(destpath):
+                    for name in files:
+                        # Get the full path of the file
+                        file_path = os.path.join(root, name)
+                        # Read the content of the file
+                        with open(file_path, "r") as f:
+                            content = f.read()
+                        # Replace 'example' with the page name in lowercase
+                        content = content.replace("example", page_name.lower().replace(" ", "_"))
+                        # Replace 'Example' with the page name in title case
+                        content = content.replace("Example", page_name.title().replace(" ", ""))
+                        # Write the modified content back to the file
+                        with open(file_path, "w") as f:
+                            f.write(content)
+
+                print(f"\n{self.ansi['success']}New page template created in {self.maindir}{self.ansi['reset']}")
+            else:
+                print(f"\n{self.ansi['error']}A page folder with name {page_name} already exist{self.ansi['reset']}")
+        else:
+            print(f"\n{self.ansi['error']}StateSXT could not find a /{parent_folder} folder in {self.maindir}{self.ansi['reset']}")
 
     def cli(self):
         parser = argparse.ArgumentParser(description="Generate Directories")
-        parser.add_argument("opt", help="Generate Directories")
-
+        parser.add_argument("opt", help="Action to perform: 'gen' for generating, 'rem' for removing, 'page' to generate a page template", choices=["gen", "rem", "page"])
         args = parser.parse_args()
 
         if str(args.opt).lower() == "gen":
             self.generate()
         elif str(args.opt).lower() == "rem":
             self.remove()
+        elif str(args.opt).lower() == "page":
+            page_name = "example"
+            page_name = str(input(f"\U0001F4D3 {self.ansi['info']}Page name [{self.ansi['success']}{page_name}{self.ansi['info']}]: {self.ansi['reset']}"))
+            self.page(page_name)
         else:
             print("statesxt does not has such command.")
 
