@@ -4,7 +4,7 @@ from base.base_driver import BaseDriver
 from abc import ABC, abstractmethod
 from base.wait import MyBy
 
-# looding all env variables and ignoring a certain warning
+# looding all env variables
 load_dotenv()
 
 

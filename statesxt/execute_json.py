@@ -4,16 +4,15 @@ import os
 
 
 def run():
-    gsheet_bbui = GSheetStateSXT(
+    gsheet_statesxt = GSheetStateSXT(
         spreadsheetName=os.getenv("SPREADSHEET_NAME"),
         folderId=os.getenv("FOLDER_ID"),
-        executeJSON=True,
         testedFilesOnly=False,
-        usedDomain="MSYS",
+        executeJSON=True,
     )
     print("updating gsheet with json...")
-    gsheet_bbui.update_all_values(useJSON=True)
-    gsheet_bbui.update_worksheet_colors(useJSON=True)
+    gsheet_statesxt.update_all_values(useJSON=True)
+    gsheet_statesxt.update_worksheet_colors(useJSON=True)
     print("updating complete!")
 
 

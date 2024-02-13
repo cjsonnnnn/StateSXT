@@ -21,16 +21,16 @@ def gsheet(request, use_gsheet, tfo):
     if "scheduler" in usedMarkers:
         yield None
         return
-    gsheet_bbui = GSheetStateSXT(
+    gsheet_statesxt = GSheetStateSXT(
         spreadsheetName=os.getenv("SPREADSHEET_NAME"),
         folderId=os.getenv("FOLDER_ID"),
         testedFilesOnly=False if (tfo == "0") else True,
     )
-    yield gsheet_bbui
+    yield gsheet_statesxt
     if use_gsheet == "1":
         print("updating gsheet...")
-        gsheet_bbui.update_all_values()
-        gsheet_bbui.update_worksheet_colors()
+        gsheet_statesxt.update_all_values()
+        gsheet_statesxt.update_worksheet_colors()
 
 
 @pytest.fixture(scope="session")

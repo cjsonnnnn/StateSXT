@@ -141,7 +141,7 @@ class StateSXT:
     def cli(self):
         parser = argparse.ArgumentParser(description="Generate Directories")
         parser.add_argument("opt", help="Action to perform: 'gen' for generating, 'rem' for removing, 'page' to generate a page template", choices=["gen", "rem", "page"])
-        parser.add_argument("--version", "-v", action="version", version="StateSXT 0.3.8")
+        parser.add_argument("--version", "-v", action="version", version="StateSXT 0.3.9")
         args = parser.parse_args()
 
         if str(args.opt).lower() == "gen":

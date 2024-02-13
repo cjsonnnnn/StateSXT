@@ -54,16 +54,16 @@ These are several composition fixtures you can use,
         if "scheduler" in usedMarkers:
             yield None
             return
-        gsheet_bbui = GSheetYOURPROJECT(
+        gsheet_statesxt = GSheetStateSXT(
             spreadsheetName=os.getenv("SPREADSHEET_NAME"),
             folderId=os.getenv("FOLDER_ID"),
             testedFilesOnly=False if (tfo == "0") else True,
         )
-        yield gsheet_bbui
+        yield gsheet_statesxt
         if use_gsheet == "1":
             print("updating gsheet...")
-            gsheet_bbui.update_all_values()
-            gsheet_bbui.update_worksheet_colors()
+            gsheet_statesxt.update_all_values()
+            gsheet_statesxt.update_worksheet_colors()
 
   This fixture has several decorators. The ``@pytest.fixture(scope="session")`` is used to declare this function as a fixture with ``session`` as the scope, meaning that it will be destroyed at the end of the test session. As for the rest, are implementing other fixtures into this function that each to give the capability to insert a configuration into CLI, e.g. ``@pytest.mark.usefixtures("use_gsheet")`` enables you to use parameter ``use_gsheet``, which the value either 0 or 1, into CLI.
 

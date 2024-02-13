@@ -47,7 +47,6 @@ def pytest_collection_modifyitems(config, items):
         - 2 = chrome
         - 3 = edge
         - 4 = firefox
-
         """
         )
         items.clear()

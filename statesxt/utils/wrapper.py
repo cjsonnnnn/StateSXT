@@ -114,6 +114,7 @@ class Wrapper:
                     try:
                         func(self, *row, *args, **kwargs)
                         result.append(["PASSED", "PASSED" if needExternalCheck else "", ""])
+                        self.p.resetState()
                     except Exception as e:
                         logging.getLogger(f"root.{__name__}.{decoratorClassName}.{decoratorMethodName}").error(
                             f"class: {self.__class__.__name__}, method: {func.__name__}\n{str(e)}"

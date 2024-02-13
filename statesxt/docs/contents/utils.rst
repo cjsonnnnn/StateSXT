@@ -56,7 +56,7 @@ email.py
 
         context = ssl.create_default_context()
         testResult = {}
-        emailSubject = "Daily BBUI Scheduler Automation Test Report"
+        emailSubject = ""
         emailBody = None
         num_of_successes = None
         num_of_fails = None
@@ -384,27 +384,27 @@ gsheet.py
 
 .. code-block:: python 
 
-    class GSheetYOURPROJECT(GSheet):
-    """Class to interact with Google Sheet of <YOURPROJECT>"""
+    class GSheetStateSXT(GSheet):
+        """Class to interact with Google Sheet corresponds to the SPREADSHEET_NAME"""
 
-    scenarioResult = {}
+        scenarioResult = {}
 
-    def __init__(
-        self,
-        spreadsheetName,
-        folderId,
-        testedFilesOnly=True,
-        executeJSON=False,
-    ) -> None:
-        super().__init__(spreadsheetName)
-        self.curDate = dt.now().strftime("%Y/%m/%d %H:%M:%S")
-        self.automationName = "Selenium"
-        self.newSpreadsheetName = f"<YOURPROJECT> Automation - Release {self.curDate}"
-        self.__folderId = folderId
-        self.__newSs = None
-        self.testedFilesOnly = testedFilesOnly
-        self.executeJSON = executeJSON
-        self.json_path = "last_run_data.json"
+        def __init__(
+            self,
+            spreadsheetName,
+            folderId,
+            testedFilesOnly=True,
+            executeJSON=False,
+        ) -> None:
+            super().__init__(spreadsheetName)
+            self.curDate = dt.now().strftime("%Y/%m/%d %H:%M:%S")
+            self.automationName = "Selenium"
+            self.newSpreadsheetName = f"Automation - Release {self.curDate}"
+            self.__folderId = folderId
+            self.__newSs = None
+            self.testedFilesOnly = testedFilesOnly
+            self.executeJSON = executeJSON
+            self.json_path = "track.json"
 
 ``create_a_copy_of_worksheet_into_new_gsheet_file_and_update_the_values``
 -------------------------------------------------------------------------

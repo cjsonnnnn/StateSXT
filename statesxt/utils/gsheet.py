@@ -21,7 +21,7 @@ class GSheet:
 
 
 class GSheetStateSXT(GSheet):
-    """Class to interact with Google Sheet specific to the SPREADSHEET_NAME"""
+    """Class to interact with Google Sheet corresponds to the SPREADSHEET_NAME"""
 
     scenarioResult = {}
 
@@ -35,7 +35,7 @@ class GSheetStateSXT(GSheet):
         super().__init__(spreadsheetName)
         self.curDate = dt.now().strftime("%Y/%m/%d %H:%M:%S")
         self.automationName = "Selenium"
-        self.newSpreadsheetName = f"<YOURPROJECT> Automation - Release {self.curDate}"
+        self.newSpreadsheetName = f"Automation - Release {self.curDate}"
         self.__folderId = folderId
         self.__newSs = None
         self.testedFilesOnly = testedFilesOnly
