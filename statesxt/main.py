@@ -140,7 +140,7 @@ class StateSXT:
 
     def cli(self):
         parser = argparse.ArgumentParser(description="Generate Directories")
-        parser.add_argument("opt", help="Action to perform: 'gen' for generating, 'rem' for removing, 'page' to generate a page template", choices=["gen", "rem", "page"])
+        parser.add_argument("opt", help="Action to perform: 'gen' for generating, 'rem' for removing, 'page' to generate a page template", choices=["gen", "rem", "create-page"])
         parser.add_argument("--version", "-v", action="version", version="StateSXT 0.3.9")
         args = parser.parse_args()
 
@@ -148,7 +148,7 @@ class StateSXT:
             self.generate()
         elif str(args.opt).lower() == "rem":
             self.remove()
-        elif str(args.opt).lower() == "page":
+        elif str(args.opt).lower() == "create-page":
             page_name = "example"
             page_name = str(input(f"\U0001F4D3 {self.ansi['info']}Page name [{self.ansi['success']}{page_name}{self.ansi['info']}]: {self.ansi['reset']}"))
             self.page(page_name)

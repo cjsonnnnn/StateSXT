@@ -1,7 +1,7 @@
+from abc import ABC, abstractmethod
 from dotenv import load_dotenv
 
 from base.base_driver import BaseDriver
-from abc import ABC, abstractmethod
 from base.wait import MyBy
 
 # looding all env variables
