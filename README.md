@@ -26,7 +26,7 @@ There are two approaches to install the package:
   ```
 - Generate the page template
   ``` console
-  statesxt page
+  statesxt create-page
   ```
 
 
