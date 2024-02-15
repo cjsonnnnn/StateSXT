@@ -42,6 +42,10 @@ class Page(ABC):
     def changeState(self):
         pass
 
+    @abstractmethod
+    def resetState(self):
+        pass
+
 
 # Locator
 class Locator:

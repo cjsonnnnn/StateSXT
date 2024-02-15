@@ -1,4 +1,4 @@
-from states.ls001 import ExampleInitState
+from .states.ls001 import ExampleInitState
 from .locator import ExampleLocator
 from .. import Page
 
@@ -13,8 +13,11 @@ class ExamplePage(Page):
         self.lr = ExampleLocator(base)
 
     # Interface Methods
-    def changeState(self, newState):
+    def changeState(self, newState):        # abstract method
         self.state = newState
+
+    def resetState(self):                   # abstract method
+        self.state = self.initState
 
     def changeLanguage(self, *args, **kwargs):
         return self.state.changeLanguage(*args, **kwargs)
