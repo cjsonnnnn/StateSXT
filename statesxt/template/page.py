@@ -19,7 +19,7 @@ class ExamplePage(Page):
     def resetState(self):                   # abstract method
         self.state = self.initState
 
-    def changeLanguage(self, *args, **kwargs):
-        return self.state.changeLanguage(*args, **kwargs)
+    def changeLanguage(self, lang):
+        return self.state.changeLanguage(lang)
 
     # Other methods specific to this page

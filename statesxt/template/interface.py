@@ -12,5 +12,5 @@ class ExampleInterface(StateInterface, ABC):
         super().__init__(base)
         self.p = contextPage
 
-    def changeLanguage(self, *args, **kwargs):
+    def changeLanguage(self, lang):
         pass
