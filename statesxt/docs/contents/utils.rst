@@ -770,7 +770,7 @@ wrapper.py
                 else:
                     self.email.testResult[funcName] = ["FAILED"]
 
-            print(f"\n\ncurrent email:\n{self.email.testResult}")
+            print(f"\n\nCurrent results:\n{self.email.testResult}")
             if isFail:
                 raise Exception(f"There is an error in {funcName}: {errorMessage}")
 

@@ -23,13 +23,13 @@ def browser(request):
 @pytest.fixture(scope="session")
 def use_gsheet(request):
     req = request.config.getoption("--use_gsheet")
-    return req if req else "1"
+    return req if req else "0"
 
 
 @pytest.fixture(scope="session")
 def use_email(request):
     req = request.config.getoption("--use_email")
-    return req if req else "1"
+    return req if req else "0"
 
 
 @pytest.fixture(scope="session")
