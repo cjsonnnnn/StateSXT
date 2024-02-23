@@ -81,18 +81,17 @@ class GSheetStateSXT(GSheet):
 
     def update_all_values(self, useJSON=False):
         if self.scenarioResult:
-            # create a new file (the duplicate of the target file)
-            self.create_a_copy_of_gsheet_file()
-
-            if useJSON:
+            if useJSON:  # to get the result data from self.json_path
                 data = self.get_json()
-            else:
+            else:  # to get the result data from the test execution, and will try to save the data to self.json_path
                 data = self.scenarioResult
                 try:
                     self.save_data_to_json()
                 except Exception as e:
-                    print(f'An error happened when trying to save the result data to {self.json_path}: \n{e}')
+                    print(f"An error happened when trying to save the result data to {self.json_path}: \n{e}")
 
+            # create a new file (the duplicate of the target file)
+            self.create_a_copy_of_gsheet_file()
 
             for worksheetName in data:
                 for namedRange in data[worksheetName]:
@@ -112,7 +111,7 @@ class GSheetStateSXT(GSheet):
                 self.__newSs.del_worksheet(self.__newSs.sheet1)
             self.upload_the_gsheet_file_to_folder()
         else:
-            print('No test result when updating all values in Google Sheet')
+            print("No test result when updating all values in Google Sheet")
 
     def update_worksheet_colors(self, useJSON=False):
         if self.scenarioResult:
@@ -120,7 +119,7 @@ class GSheetStateSXT(GSheet):
                 data = self.get_json()
             else:
                 data = self.scenarioResult
-                
+
             for wksName in data:
                 wksId = self.__newSs.worksheet(wksName).id
                 noFail = True
@@ -165,4 +164,4 @@ class GSheetStateSXT(GSheet):
                 # Send the batchUpdate request
                 self.__newSs.batch_update({"requests": requestsBatch})
         else:
-            print('No test result when updating worksheet colors in Google Sheet')
+            print("No test result when updating worksheet colors in Google Sheet")

@@ -1,5 +1,4 @@
 import argparse
-import warnings
 import shutil
 import os
 
@@ -14,15 +13,16 @@ class StateSXT:
             "utils",
             ".env-template",
             ".gitignore",
-            "execute_json.py",
+            "retry.py",
             "track.json",
             "pyproject.toml",
             "pytest.ini",
             "README.md",
             "tox.ini",
         ]
-        self.scriptdir = os.path.dirname(os.path.realpath(__file__))
-        self.maindir = os.getcwd()  # Get the current working directory
+        self.sourcedir = os.path.dirname(os.path.realpath(__file__))
+        self.destdir = os.getcwd()
+        self.destdirname = self.destdir.split("\\")[-1]
         self.ansi = {
             "error": "\033[91m\033[1m",
             "info": "\033[94m",
@@ -32,126 +32,233 @@ class StateSXT:
             "reset": "\033[0m",
             "underline": "\033[4m",
         }
+        self.name = "StateSXT"
+        self.optX = lambda oriColor, opt: f"[{self.ansi['success']}{opt}{self.ansi[oriColor]}]: {self.ansi['reset']}"
+        self.opt1 = lambda oriColor, opt: f"({self.ansi['success']}{opt}{self.ansi[oriColor]})"
+        self.opt2 = lambda oriColor, opt1, opt2: f"({self.ansi['success']}{opt1}{self.ansi[oriColor]}/{self.ansi['success']}{opt2}{self.ansi[oriColor]})"
+        self.obj = lambda obj: f"'{obj}'"
+
+    def toConfirm(self, input: input, adds: list[str] = []) -> bool:
+        val = str(input).lower()
+        res = True if (val in ["yes", "y"]) else False
+        if adds:
+            res = val if (val in adds) else res
+        return res
+
+    def warnVC(self) -> bool:
+        print(
+            f"\u2757{self.ansi['warn']} Before continuing the process, it is recommended that you have installed your project with a version control, e.g. Git/Github. This is to prevent your files/folders from being completely lost. {self.ansi['reset']}"
+        )
+        return self.toConfirm(input(f"\u2757{self.ansi['warn']} Do you want to proceed? {self.opt2('warn', 'yes', 'no')} {self.optX('warn', 'no')}"))
+
+    def formatPath(self, path_name: str, isLower: bool = True, isName: bool = False) -> str:
+        if isLower:
+            path_name = path_name.lower()
+
+        path_name = path_name.split("\\")[0].split("/")[0].strip()
+        if not isName:
+            path_name = path_name.replace(" ", "_")
+
+        return path_name
+
+    def getType(self, path: str, doWarn: bool = True) -> str | None:
+        if any(type := [os.path.isdir(path), os.path.isfile(path)]):  # condition: when the folder/file already exists
+            if type[0]:
+                ptype = "folder"
+            elif type[1]:
+                ptype = "file"
+            if doWarn:
+                p = path.split("\\")[-1]
+                print(f"{self.ansi['warn']}{ptype.capitalize()} {self.obj(p)} already exists{self.ansi['reset']}")
+            return ptype
 
     def generate(self):
+        print()
         rate = 0
         for p in self.tree:
-            sourcepath = os.path.join(self.scriptdir, p)
-            destpath = os.path.join(self.maindir, p)
+            sourcepath = os.path.join(self.sourcedir, p)
+            destpath = os.path.join(self.destdir, p)
 
-            if any(res := [os.path.isdir(destpath), os.path.isfile(destpath)]):
-                if res[0]:
-                    message = "Folder"
-                elif res[1]:
-                    message = "File"
-                warnings.warn(
-                    f"{self.ansi['warn']}{message} already exist: /{p}{self.ansi['reset']}",
-                    UserWarning,
-                    stacklevel=2,
-                )
-            elif os.path.isdir(sourcepath):
+            # generate the file/folder
+            if self.getType(destpath):  # condition: when the folder/file already exists
+                pass
+            elif os.path.isdir(sourcepath):  # condition: when it's a folder
                 shutil.copytree(sourcepath, destpath)
                 rate += 1
-            elif os.path.isfile(sourcepath):
+            elif os.path.isfile(sourcepath):  # condition: when it's a file
                 shutil.copy2(sourcepath, destpath)
                 rate += 1
-            else:
-                warnings.warn(
-                    f"{self.ansi['warn']}Path does not exist: /{p}{self.ansi['reset']}",
-                    UserWarning,
-                    stacklevel=2,
-                )
+            else:  # condition: when the path does not exist
+                print(f"{self.ansi['warn']}Path {self.obj(p)} does not exist{self.ansi['reset']}")
 
+        # summary
         if rate == len(self.tree):
-            print(f"\n{self.ansi['success']}All templates created in {self.maindir}{self.ansi['reset']}")
+            print(f"{self.ansi['success']}All templates created in {self.obj(self.destdir)}{self.ansi['reset']}")
         elif rate > 1:
-            print(
-                f"\n{self.ansi['success']}{rate} template/-s created in {self.maindir}{self.ansi['warn']}, but {len(self.tree)-rate} failed.{self.ansi['reset']}"
-            )
+            print(f"\n{self.ansi['success']}{rate} template/-s created in {self.obj(self.destdir)}{self.ansi['warn']}, but {len(self.tree)-rate} failed.{self.ansi['reset']}")
         else:
-            print(f"\n{self.ansi['error']}All templates failed to create in {self.maindir}{self.ansi['reset']}")
+            print(f"\n{self.ansi['error']}All templates failed to create in {self.obj(self.destdir)}{self.ansi['reset']}")
 
     def remove(self):
-        rate = 0
-        for p in self.tree:
-            sourcepath = os.path.join(self.maindir, p)
-            if os.path.isdir(sourcepath):
-                shutil.rmtree(sourcepath)
-                rate += 1
-            elif os.path.isfile(sourcepath):
-                os.remove(sourcepath)
-                rate += 1
+        isProceeded = self.warnVC()
+
+        print()
+        if isProceeded:
+            rate = 0
+            for p in self.tree:
+                destpath = os.path.join(self.destdir, p)
+
+                # remove the file/folder
+                if os.path.isdir(destpath):  # condition: when it's a folder
+                    shutil.rmtree(destpath)
+                    rate += 1
+                elif os.path.isfile(destpath):  # condition: when it's a file
+                    os.remove(destpath)
+                    rate += 1
+                else:  # condition: when the path does not exist
+                    print(f"{self.ansi['warn']}Path {self.obj(p)} does not exist{self.ansi['reset']}")
+
+            # summary
+            if rate == len(self.tree):
+                print(f"{self.ansi['success']}All templates removed from {self.obj(self.destdir)}{self.ansi['reset']}")
+            elif rate > 1:
+                print(f"\n{self.ansi['success']}{rate} template/-s removed from {self.obj(self.destdir)}{self.ansi['warn']}, but {len(self.tree)-rate} failed.{self.ansi['reset']}")
             else:
-                warnings.warn(
-                    f"{self.ansi['warn']}Path /{p} does not exist{self.ansi['reset']}",
-                    UserWarning,
-                    stacklevel=2,
-                )
+                print(f"\n{self.ansi['error']}All templates failed to remove from {self.obj(self.destdir)}{self.ansi['reset']}")
 
-        if rate == len(self.tree):
-            print(f"\n{self.ansi['success']}All templates removed from {self.maindir}{self.ansi['reset']}")
-        elif rate > 1:
-            print(
-                f"\n{self.ansi['success']}{rate} template/-s removed from {self.maindir}{self.ansi['warn']}, but {len(self.tree)-rate} failed.{self.ansi['reset']}"
-            )
-        else:
-            print(f"\n{self.ansi['error']}All templates failed to remove from {self.maindir}{self.ansi['reset']}")
+    def update(self):
+        isProceeded = self.warnVC()
 
-    def page(self, page_name: str):
-        # check if the parent folder exists
+        print()
+        if isProceeded:
+            # deep-loop over self.tree and gather the choices
+            choices = []
+            defaultSubSkipped = "C:\\"
+            subSkipped = defaultSubSkipped
+            for destpath, dirs, files in os.walk(self.destdir):
+                sub = str(destpath).split(self.destdir + "\\")[-1] if (destpath != self.destdir) else ""
+                subSplits = sub.split("\\")
+                depth = len(subSplits) - 1
+
+                # print(f"\nself.destdir: {self.destdir}")
+                # print(f"destpath: {destpath}")
+                # print(f"dirs: {dirs}")
+                # print(f"files: {files}")
+                # print(f"sub: {sub}")
+                # print(f"subSplits: {subSplits}")
+                # print(f"depth: {depth}")
+                # print(f"subSkipped: {subSkipped}\n")
+
+                if (subSkipped not in sub) or (subSkipped not in subSplits):  # condition: when updateOpt tells to update folder entirely
+                    # print(1)
+                    if os.path.exists(os.path.join(self.sourcedir, sub)) and (sub != ""):  # condition: check if the folder exists in source, and asking update to folder
+                        # print(2)
+                        updateOpt = self.toConfirm(
+                            input(
+                                " \u27b1 " * depth
+                                + f"\u2753{self.ansi['info']} Do you want to update folder {self.obj(sub)} entirely? {self.opt2('info', 'yes', 'no')} or selectively? {self.opt1('info', 'select')} {self.optX('info', 'no')}"
+                            ),
+                            adds=["select"],
+                        )
+                        subSkipped = (
+                            sub if (updateOpt != "select") else defaultSubSkipped
+                        )  # if updateOpt is not 'select' then the next iteration will not check the files/folders within
+                        if updateOpt == True:
+                            choices.append([sub, "folder"])
+
+                    if (subSkipped not in sub) and (subSkipped not in subSplits):  # condition: when updateOpt tells to update folder entirely
+                        for file in files:  # condition: loop over files within destpath, and asking update to files
+                            pSub = os.path.join(sub, file)
+                            psubSplits = pSub.split("\\")
+                            depth = len(psubSplits) - 1
+                            if os.path.exists(os.path.join(self.sourcedir, pSub)):  # condition: check if the file exists in source
+                                updateOpt = self.toConfirm(
+                                    input(
+                                        " \u27b1 " * depth
+                                        + f"\u2753{self.ansi['info']} Do you want to update file {self.obj(pSub)}? {self.opt2('info', 'yes', 'no')} {self.optX('info', 'no')}"
+                                    ),
+                                )
+                                if updateOpt:
+                                    choices.append([pSub, "file"])
+
+            print()
+            # loop over the choices and update
+            for c in choices:
+                sourcepath = os.path.join(self.sourcedir, c[0])
+                destpath = os.path.join(self.destdir, c[0])
+
+                if c[1] == "folder":
+                    try:
+                        shutil.rmtree(destpath)
+                        shutil.copytree(sourcepath, destpath)
+                        print(f"{self.ansi['success']}Folder {self.obj(c[0])} updated successfully{self.ansi['reset']}")
+                    except Exception as e:
+                        print(f"{self.ansi['error']}Folder {self.obj(c[0])} failed to update{self.ansi['reset']}")
+                elif c[1] == "file":
+                    try:
+                        os.remove(destpath)
+                        shutil.copy2(sourcepath, destpath)
+                        print(f"{self.ansi['success']}File {self.obj(c[0])} updated successfully{self.ansi['reset']}")
+                    except Exception as e:
+                        print(f"{self.ansi['error']}File {self.obj(c[0])} failed to update{self.ansi['reset']}")
+                else:
+                    print(f"{self.ansi['error']}Type is invalid{self.ansi['reset']}")
+
+    def createPage(self):
+        nameX = "example"  # default name
+        nameI = self.formatPath(  # input name
+            str(input(f"\U0001F4D3{self.ansi['info']} Page name {self.optX('info', nameX)}")),
+            isLower=False,
+            isName=True,
+        )
+        page_name = nameI if nameI else nameX
+
+        print()
         parent_folder = "testcases"
-        if os.path.exists(os.path.join(self.maindir, parent_folder)):
-            # check if a folder with name as the inputted page name does not exist
-            page_name_path = page_name.lower().strip().replace(' ', '_')
-            if not os.path.exists(os.path.join(self.maindir, f"{parent_folder}\{page_name_path}")):
-                # Get the path to the template folder
-                template_folder = os.path.join(self.scriptdir, "template")
-
-                # Define the destination folder based on the page name
-                destpath = os.path.join(self.maindir, f"{parent_folder}\{page_name_path}")
+        if os.path.exists(os.path.join(self.destdir, parent_folder)):  # condition: when folder /testcases exists
+            page_name_path = self.formatPath(page_name)
+            if not os.path.exists(os.path.join(self.destdir, f"{parent_folder}\{page_name_path}")):  # condition: when folder with name page_name does not exist
+                template_folder = os.path.join(self.sourcedir, "template")
+                destpath = os.path.join(self.destdir, f"{parent_folder}\{page_name_path}")
 
                 # Copy the template folder to the destination
                 shutil.copytree(template_folder, destpath)
 
                 # Rename files inside the copied folder and modify their content
                 for root, dirs, files in os.walk(destpath):
-                    if "__pycache__" in root:
-                        continue  # Skip processing the __pycache__ folder and its contents
+                    if "__pycache__" in root:  # condition: skip the __pycache__ folder and its contents
+                        continue
 
+                    # loop over files in the dir, and change the contents
                     for name in files:
-                        # Get the full path of the file
                         file_path = os.path.join(root, name)
-                        # Read the content of the file
                         with open(file_path, "r", encoding="utf-8") as f:
                             content = f.read()
-                        # Replace 'example' with the page name in lowercase
                         content = content.replace("example", page_name.lower().replace(" ", "_"))
-                        # Replace 'Example' with the page name in title case
                         content = content.replace("Example", page_name.title().replace(" ", ""))
-                        # Write the modified content back to the file
                         with open(file_path, "w", encoding="utf-8") as f:
                             f.write(content)
 
-                print(f"\n{self.ansi['success']}New page template created in {self.maindir}{self.ansi['reset']}")
+                print(f"{self.ansi['success']}New page template created in {self.obj(self.destdir)}{self.ansi['reset']}")
             else:
-                print(f"\n{self.ansi['error']}A page folder with name {page_name_path} already exist{self.ansi['reset']}")
+                print(f"{self.ansi['error']}A page folder with name {self.obj(page_name_path)} already exists{self.ansi['reset']}")
         else:
-            print(f"\n{self.ansi['error']}StateSXT could not find a /{parent_folder} folder in {self.maindir}{self.ansi['reset']}")
+            print(f"{self.ansi['error']}{self.name} could not find folder {self.obj(parent_folder)} in {self.obj(self.destdir)}{self.ansi['reset']}")
 
     def cli(self):
         parser = argparse.ArgumentParser(description="Generate Directories")
-        parser.add_argument("opt", help="Action to perform: 'gen' for generating, 'rem' for removing, 'page' to generate a page template", choices=["gen", "rem", "create-page"])
-        parser.add_argument("--version", "-v", action="version", version="StateSXT 0.3.15")
+        parser.add_argument("opt", help="Action to perform: 'generate', 'remove', 'update', and 'create-page'", choices=["generate", "remove", "update", "create-page"])
+        parser.add_argument("--version", "-v", action="version", version="StateSXT 0.4.0")
         args = parser.parse_args()
 
-        if str(args.opt).lower() == "gen":
+        if str(args.opt).lower() == "generate":
             self.generate()
-        elif str(args.opt).lower() == "rem":
+        elif str(args.opt).lower() == "remove":
             self.remove()
+        elif str(args.opt).lower() == "update":
+            self.update()
         elif str(args.opt).lower() == "create-page":
-            page_name = "example"
-            page_name = str(input(f"\U0001F4D3 {self.ansi['info']}Page name [{self.ansi['success']}{page_name}{self.ansi['info']}]: {self.ansi['reset']}"))
-            self.page(page_name)
+            self.createPage()
         else:
             print("statesxt does not has such command.")
 

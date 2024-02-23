@@ -18,13 +18,17 @@ There are two approaches to install the package:
 
 - Generate the template
   ``` console
-  statesxt gen
+  statesxt generate
   ```
 - Remove the template
   ``` console
-  statesxt rem
+  statesxt remove
   ```
-- Generate the page template
+- Update the template
+  ``` console
+  statesxt update
+  ```
+- Generate a new page template (inside /testcases)
   ``` console
   statesxt create-page
   ```

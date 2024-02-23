@@ -221,5 +221,6 @@ pip-selfcheck.json
 
 # dev
 my-test*
+debug.py
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,python,virtualenv,git
