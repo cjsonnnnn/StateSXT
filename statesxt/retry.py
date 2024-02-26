@@ -7,7 +7,7 @@ def run():
     gsheet_statesxt = GSheetStateSXT(
         spreadsheetName=os.getenv("SPREADSHEET_NAME"),
         folderId=os.getenv("FOLDER_ID"),
-        testedFilesOnly=False,
+        testedFilesOnly=True,
     )
     print("updating gsheet with json...")
     gsheet_statesxt.update_all_values(useJSON=True)

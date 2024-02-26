@@ -80,16 +80,18 @@ class GSheetStateSXT(GSheet):
             return json.load(json_file)
 
     def update_all_values(self, useJSON=False):
-        if self.scenarioResult:
-            if useJSON:  # to get the result data from self.json_path
-                data = self.get_json()
-            else:  # to get the result data from the test execution, and will try to save the data to self.json_path
-                data = self.scenarioResult
-                try:
-                    self.save_data_to_json()
-                except Exception as e:
-                    print(f"An error happened when trying to save the result data to {self.json_path}: \n{e}")
+        if useJSON:  # to get the result data from self.json_path
+            data = self.get_json()
+        else:  # to get the result data from the test execution, and will try to save the data to self.json_path
+            data = self.scenarioResult
+            try:
+                self.save_data_to_json()
+            except Exception as e:
+                print(f"An error happened when trying to save the result data to {self.json_path}: \n{e}")
 
+        print(f"self.data:\n{data}")
+
+        if data:
             # create a new file (the duplicate of the target file)
             self.create_a_copy_of_gsheet_file()
 
@@ -114,12 +116,12 @@ class GSheetStateSXT(GSheet):
             print("No test result when updating all values in Google Sheet")
 
     def update_worksheet_colors(self, useJSON=False):
-        if self.scenarioResult:
-            if useJSON:
-                data = self.get_json()
-            else:
-                data = self.scenarioResult
+        if useJSON:
+            data = self.get_json()
+        else:
+            data = self.scenarioResult
 
+        if data:
             for wksName in data:
                 wksId = self.__newSs.worksheet(wksName).id
                 noFail = True
