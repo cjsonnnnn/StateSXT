@@ -89,8 +89,6 @@ class GSheetStateSXT(GSheet):
             except Exception as e:
                 print(f"An error happened when trying to save the result data to {self.json_path}: \n{e}")
 
-        print(f"self.data:\n{data}")
-
         if data:
             # create a new file (the duplicate of the target file)
             self.create_a_copy_of_gsheet_file()
