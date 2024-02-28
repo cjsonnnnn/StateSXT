@@ -12,14 +12,23 @@ class ExamplePage(Page):
         self.state = self.initState
         self.lr = ExampleLocator(base)
 
-    # Interface Methods
-    def changeState(self, newState):  # abstract method
+    """
+    Methods: Abstract
+    """
+
+    def changeState(self, newState):
         self.state = newState
 
-    def resetState(self):  # abstract method
+    def resetState(self):
         self.state = self.initState
+
+    """
+    Methods: Interface
+    """
 
     def changeLanguage(self, lang):
         return self.state.changeLanguage(lang)
 
-    # Other methods specific to this page
+    """
+    Methods: Specific
+    """

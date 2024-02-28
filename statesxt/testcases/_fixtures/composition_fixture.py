@@ -27,8 +27,9 @@ def gsheet(request, use_gsheet, tfo):
         testedFilesOnly=False if (tfo == "0") else True,
     )
     yield gsheet_statesxt
+    gsheet_statesxt.save_data_to_json()
     if use_gsheet == "1":
-        print("updating gsheet...")
+        print("Updating gsheet...")
         gsheet_statesxt.update_all_values()
         gsheet_statesxt.update_worksheet_colors()
 

@@ -71,8 +71,11 @@ class GSheetStateSXT(GSheet):
 
     def save_data_to_json(self):
         # Write data to the JSON file
-        with open(self.json_path, "w") as json_file:
-            json.dump(self.scenarioResult, json_file, indent=4)  # Use indent for pretty formatting
+        try:
+            with open(self.json_path, "w") as json_file:
+                json.dump(self.scenarioResult, json_file, indent=4)  # Use indent for pretty formatting
+        except Exception as e:
+            print(f"An error happened when trying to save the result data to {self.json_path}: \n{e}")
 
     def get_json(self):
         # Read data from the JSON file
@@ -84,10 +87,6 @@ class GSheetStateSXT(GSheet):
             data = self.get_json()
         else:  # to get the result data from the test execution, and will try to save the data to self.json_path
             data = self.scenarioResult
-            try:
-                self.save_data_to_json()
-            except Exception as e:
-                print(f"An error happened when trying to save the result data to {self.json_path}: \n{e}")
 
         if data:
             # create a new file (the duplicate of the target file)
