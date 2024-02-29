@@ -1,4 +1,4 @@
-# statesxt
+# StateSXT
 
 ![Tests](https://github.com/cjsonnnnn/statesxt/actions/workflows/test.yml/badge.svg)
 <br/>

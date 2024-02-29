@@ -13,7 +13,7 @@ class StateSXT:
             "utils",
             ".env-template",
             ".gitignore",
-            "named_ranges",
+            "named_ranges.py",
             "retry.py",
             "track.json",
             "pyproject.toml",
@@ -95,7 +95,7 @@ class StateSXT:
         # summary
         if rate == len(self.tree):
             print(f"{self.ansi['success']}All templates created in {self.obj(self.destdir)}{self.ansi['reset']}")
-        elif rate > 1:
+        elif rate >= 1:
             print(f"\n{self.ansi['success']}{rate} template/-s created in {self.obj(self.destdir)}{self.ansi['warn']}, but {len(self.tree)-rate} failed.{self.ansi['reset']}")
         else:
             print(f"\n{self.ansi['error']}All templates failed to create in {self.obj(self.destdir)}{self.ansi['reset']}")
@@ -249,7 +249,7 @@ class StateSXT:
     def cli(self):
         parser = argparse.ArgumentParser(description="Generate Directories")
         parser.add_argument("opt", help="Action to perform: 'generate', 'remove', 'update', and 'create-page'", choices=["generate", "remove", "update", "create-page"])
-        parser.add_argument("--version", "-v", action="version", version="StateSXT 0.4.3")
+        parser.add_argument("--version", "-v", action="version", version="StateSXT 0.4.5")
         args = parser.parse_args()
 
         if str(args.opt).lower() == "generate":
