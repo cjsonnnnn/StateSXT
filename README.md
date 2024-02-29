@@ -15,7 +15,6 @@ There are two approaches to install the package:
 > **Note:** It is always better to install the package in a virtual environment.
 
 ## How to Use?
-
 - Generate the template
   ``` console
   statesxt generate
@@ -35,7 +34,6 @@ There are two approaches to install the package:
 
 
 ## How to Update?
-
 Currently, the package can not be updated through usual command `pip install --upgrade statesxt`. Probably because is hosted in TestPypi.
 So, for the time being, user have to reinstall the package.
 

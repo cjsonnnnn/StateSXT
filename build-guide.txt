@@ -1,6 +1,0 @@
-# build (choose one)
-# - py -m build
-# - py setup.py sdist bdist_wheel
-
-# publish
-# - py -m twine upload --repository testpypi dist/*
