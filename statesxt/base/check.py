@@ -15,36 +15,6 @@ class CheckDriver:
         self.mkd = MouseKeysDriver(driver)
         self.__driver = driver
 
-    def check_viewport(self, target_element: WebElement) -> bool:
-        """
-        Checks if an element is within the current viewport
-
-        Args:
-            target_element (WebElement): is the element whose position will be checked againts the viewport
-
-        Returns:
-            bool: True means that the element is within the viewport, and vice versa
-        """
-
-        if target_element:
-            # since there are cases where the element is in progress to get into the viewport, e.g. scrolling, so then this loop is used to give such chances
-            for i in range(7):
-                # viewport attr
-                viewport_height = self.__driver.execute_script("return window.innerHeight;")
-                viewport_top = self.__driver.execute_script("return window.pageYOffset;")
-                viewport_bottom = viewport_top + viewport_height
-
-                # target element attr
-                element_rect = target_element.rect
-                element_top = element_rect["y"]
-                element_bottom = element_top + element_rect["height"]
-
-                if (viewport_top < element_top) and (viewport_bottom > element_bottom):
-                    # The element is within the viewport
-                    return True
-                time.sleep(0.7)
-        return False
-
     def check_alert(self, isSuccess: bool, isVisible: bool, cust_message: str = None) -> bool:
         """
         Checks the presence of alert element
@@ -98,4 +68,34 @@ class CheckDriver:
             # check the current row
             if rowdata == target_row:
                 return True
+        return False
+
+    def check_viewport(self, target_element: WebElement) -> bool:
+        """
+        Checks if an element is within the current viewport
+
+        Args:
+            target_element (WebElement): is the element whose position will be checked againts the viewport
+
+        Returns:
+            bool: True means that the element is within the viewport, and vice versa
+        """
+
+        if target_element:
+            # since there are cases where the element is in progress to get into the viewport, e.g. scrolling, so then this loop is used to give such chances
+            for i in range(7):
+                # viewport attr
+                viewport_height = self.__driver.execute_script("return window.innerHeight;")
+                viewport_top = self.__driver.execute_script("return window.pageYOffset;")
+                viewport_bottom = viewport_top + viewport_height
+
+                # target element attr
+                element_rect = target_element.rect
+                element_top = element_rect["y"]
+                element_bottom = element_top + element_rect["height"]
+
+                if (viewport_top < element_top) and (viewport_bottom > element_bottom):
+                    # The element is within the viewport
+                    return True
+                time.sleep(0.7)
         return False

@@ -16,22 +16,6 @@ class TableDriver:
         self.ac = ActionChains(driver)
         self.wd = WaitDriver(driver, duration)
 
-    def get_table_rows(self, table: WebElement):
-        tbody = table.find_element(By.TAG_NAME, "tbody")
-        return tbody.find_elements(By.TAG_NAME, "tr")
-
-    def get_table_cols(self, row: WebElement):
-        return row.find_elements(By.TAG_NAME, "td")
-
-    def get_data_on_hint(self, hoverable_element, hint_table, hint_header, ignored_columns):
-        self.ac.move_to_element(hoverable_element).perform()
-        rows = self.wd.all_elements(By.XPATH, hint_table)
-        result = []
-        for row in rows if hint_header else rows[1:]:
-            cols = row.find_elements(By.TAG_NAME, "div")
-            result.append([self.ft.convert_number(cols[i].text) for i in range(len(cols)) if i not in ignored_columns])
-        return result
-
     def get_attribute(self, element, option=[]):
         if "color" in option:
             if element.text == "":
@@ -62,11 +46,27 @@ class TableDriver:
                         ]
                         continue
                     if j in attribute:
-                        temp[column_names[j]] = [(self.ft.convert_number(s.replace("%", "").strip("'")) if (s != "''") else None) for s in repr(cols[j].text).split("\\n")] + [
+                        temp[column_names[j]] = [self.ft.convert_number(s.replace("%", "").strip("'")) if (s != "''") else None for s in repr(cols[j].text).split("\\n")] + [
                             self.get_attribute(cols[j], option=["color"])
                         ]
                         continue
-                    temp[column_names[j]] = [(self.ft.convert_number(s.replace("%", "").strip("'")) if (s != "''") else None) for s in repr(cols[j].text).split("\\n")]
+                    temp[column_names[j]] = [self.ft.convert_number(s.replace("%", "").strip("'")) if (s != "''") else None for s in repr(cols[j].text).split("\\n")]
                 data.append(temp)
 
         return data
+
+    def get_data_on_hint(self, hoverable_element, hint_table, hint_header, ignored_columns):
+        self.ac.move_to_element(hoverable_element).perform()
+        rows = self.wd.all_elements(By.XPATH, hint_table)
+        result = []
+        for row in rows if hint_header else rows[1:]:
+            cols = row.find_elements(By.TAG_NAME, "div")
+            result.append([self.ft.convert_number(cols[i].text) for i in range(len(cols)) if i not in ignored_columns])
+        return result
+
+    def get_table_cols(self, row: WebElement):
+        return row.find_elements(By.TAG_NAME, "td")
+
+    def get_table_rows(self, table: WebElement):
+        tbody = table.find_element(By.TAG_NAME, "tbody")
+        return tbody.find_elements(By.TAG_NAME, "tr")

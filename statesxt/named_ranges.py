@@ -185,6 +185,7 @@ class NamedRanges:
                             "named_range_id": named_range["namedRangeId"],
                             "name": str(named_range["name"]).replace(search, replace),
                             "range": {
+                                "sheetId": named_range["range"]["sheetId"],
                                 "startRowIndex": named_range["range"]["startRowIndex"],
                                 "endRowIndex": named_range["range"]["endRowIndex"],
                                 "startColumnIndex": named_range["range"]["startColumnIndex"],

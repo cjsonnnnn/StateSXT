@@ -1,4 +1,4 @@
-from .states.ls01 import ExampleInitState
+from .states.ts01 import ExampleInitState
 from .locator import ExampleLocator
 from .. import Page
 
@@ -16,19 +16,27 @@ class ExamplePage(Page):
     Methods: Abstract
     """
 
+    # region
     def changeState(self, newState):
         self.state = newState
 
     def resetState(self):
         self.state = self.initState
 
+    # endregion
+
     """
     Methods: Interface
     """
 
-    def changeLanguage(self, lang):
-        return self.state.changeLanguage(lang)
+    # region ==> is a Python feature to freely collapsing code, ended with endregion
+    def exampleTransition(self, exampleParam):
+        return self.state.exampleTransition(exampleParam)
+
+    # endregion
 
     """
     Methods: Specific
     """
+    # region
+    # endregion

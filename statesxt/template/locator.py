@@ -10,5 +10,5 @@ class ExampleLocator(Locator):
 
     def setup(self):
         # flags
-        self.JPN_FLAG_BUTTON = lambda loc="//div[@class='d-flex justify-content-center']//label[1]": self.bd.wd.clickable(self.by.xpath, loc)
-        self.ENG_FLAG_BUTTON = lambda loc="//div[@class='d-flex justify-content-center']//label[2]": self.bd.wd.clickable(self.by.xpath, loc)
+        self.exampleLocator1 = lambda loc="exampleloc1": self.bd.wd.clickable(self.by.xpath, loc)
+        self.exampleLocator2 = lambda loc="exampleloc2": self.bd.wd.visible(self.by.xpath, loc)

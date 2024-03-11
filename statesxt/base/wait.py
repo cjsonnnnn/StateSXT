@@ -36,20 +36,6 @@ class WaitDriver:
         self.wdw = WebDriverWait(driver, duration)
 
     @Wrapper.exception_handling_returns_None
-    def an_element(self, by: MyBy, locator, cusdur: float = 0, cusfreq: float = 0.5) -> WebElement:
-        # config
-        if cusdur > 0:
-            self.wdw._timeout = cusdur
-        if cusfreq != 0.5:
-            self.wdw._poll = cusfreq
-        # get
-        res = self.wdw.until(EC.presence_of_element_located((by, locator)))
-        # reset
-        self.wdw._timeout = self.init_duration
-        self.wdw._poll = 0.5
-        return res
-
-    @Wrapper.exception_handling_returns_None
     def all_elements(self, by: MyBy, locator, cusdur: float = 0, cusfreq: float = 0.5) -> list[WebElement]:
         # config
         if cusdur > 0:
@@ -59,6 +45,20 @@ class WaitDriver:
             self.wdw._poll = cusfreq
         # get
         res = self.wdw.until(EC.presence_of_all_elements_located((by, locator)))
+        # reset
+        self.wdw._timeout = self.init_duration
+        self.wdw._poll = 0.5
+        return res
+
+    @Wrapper.exception_handling_returns_None
+    def an_element(self, by: MyBy, locator, cusdur: float = 0, cusfreq: float = 0.5) -> WebElement:
+        # config
+        if cusdur > 0:
+            self.wdw._timeout = cusdur
+        if cusfreq != 0.5:
+            self.wdw._poll = cusfreq
+        # get
+        res = self.wdw.until(EC.presence_of_element_located((by, locator)))
         # reset
         self.wdw._timeout = self.init_duration
         self.wdw._poll = 0.5
@@ -79,20 +79,6 @@ class WaitDriver:
         return res
 
     @Wrapper.exception_handling_returns_None
-    def visible(self, by: MyBy, locator, cusdur: float = 0, cusfreq: float = 0.5) -> WebElement:
-        # config
-        if cusdur > 0:
-            self.wdw._timeout = cusdur
-        if cusfreq != 0.5:
-            self.wdw._poll = cusfreq
-        # get
-        res = self.wdw.until(EC.visibility_of_element_located((by, locator)))
-        # reset
-        self.wdw._timeout = self.init_duration
-        self.wdw._poll = 0.5
-        return res
-
-    @Wrapper.exception_handling_returns_None
     def invisible(self, by: MyBy, locator, cusdur: float = 0, cusfreq: float = 0.5) -> bool:
         # config
         if cusdur > 0:
@@ -101,6 +87,20 @@ class WaitDriver:
             self.wdw._poll = cusfreq
         # get
         res = self.wdw.until(EC.invisibility_of_element_located((by, locator)))
+        # reset
+        self.wdw._timeout = self.init_duration
+        self.wdw._poll = 0.5
+        return res
+
+    @Wrapper.exception_handling_returns_None
+    def visible(self, by: MyBy, locator, cusdur: float = 0, cusfreq: float = 0.5) -> WebElement:
+        # config
+        if cusdur > 0:
+            self.wdw._timeout = cusdur
+        if cusfreq != 0.5:
+            self.wdw._poll = cusfreq
+        # get
+        res = self.wdw.until(EC.visibility_of_element_located((by, locator)))
         # reset
         self.wdw._timeout = self.init_duration
         self.wdw._poll = 0.5

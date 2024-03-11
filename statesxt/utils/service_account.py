@@ -4,12 +4,25 @@ import gspread
 import json
 
 
-class GSheet:
-    """Class to interact with Google Sheet"""
+class ServiceAccount:
+    """Implementing a service account capabilities"""
 
-    def __init__(self, spreadsheetName) -> None:
+    def __init__(
+        self,
+        spreadsheetName,
+        folderId,
+        domain: str = None,
+        testedFilesOnly=True,
+    ) -> None:
+        self.__folderId = folderId
+        self.__newSs = None
         self.__sa = gspread.service_account()
         self.__ss = self.__sa.open(spreadsheetName)
+        self.automationName = "Selenium"
+        self.curDate = dt.now().strftime("%Y/%m/%d %H:%M:%S")
+        self.json_path = "results.json"
+        self.newSpreadsheetName = f"Automation - Release {self.curDate} - {domain.upper()}" if domain else f"Automation - Release {self.curDate}"
+        self.testedFilesOnly = testedFilesOnly
 
     @property
     def sa(self):
@@ -18,36 +31,6 @@ class GSheet:
     @property
     def ss(self):
         return self.__ss
-
-
-class GSheetStateSXT(GSheet):
-    """Class to interact with Google Sheet corresponds to the SPREADSHEET_NAME"""
-
-    scenarioResult = {}
-
-    def __init__(
-        self,
-        spreadsheetName,
-        folderId,
-        testedFilesOnly=True,
-    ) -> None:
-        super().__init__(spreadsheetName)
-        self.curDate = dt.now().strftime("%Y/%m/%d %H:%M:%S")
-        self.automationName = "Selenium"
-        self.newSpreadsheetName = f"Automation - Release {self.curDate}"
-        self.__folderId = folderId
-        self.__newSs = None
-        self.testedFilesOnly = testedFilesOnly
-        self.json_path = "track.json"
-
-    def create_a_copy_of_worksheet_into_new_gsheet_file_and_update_the_values(self, worksheetName, namedRange, values):
-        try:  # assuming that the gsheet has already a worksheet with paramater name
-            wks = self.__newSs.worksheet(worksheetName)
-        except:  # assuming that the gsheet does not have any worksheet the same with the parameter
-            oldWks = self.ss.worksheet(worksheetName)
-            wks = self.__newSs.worksheet(oldWks.copy_to(self.__newSs.id)["title"])
-            wks.update_title(worksheetName)
-        wks.update(namedRange, values, value_input_option="USER_ENTERED")
 
     def create_a_copy_of_gsheet_file(self):
         self.sa.copy(file_id=self.ss.id, title=self.newSpreadsheetName, copy_permissions=True)
@@ -60,34 +43,25 @@ class GSheetStateSXT(GSheet):
                     deleteRequests.append({"deleteSheet": {"sheetId": wks.id}})
             self.__newSs.batch_update({"requests": deleteRequests})
 
+    def create_a_copy_of_worksheet_into_new_gsheet_file_and_update_the_values(self, worksheetName, namedRange, values):
+        try:  # assuming that the gsheet has already a worksheet with paramater name
+            wks = self.__newSs.worksheet(worksheetName)
+        except:  # assuming that the gsheet does not have any worksheet the same with the parameter
+            oldWks = self.ss.worksheet(worksheetName)
+            wks = self.__newSs.worksheet(oldWks.copy_to(self.__newSs.id)["title"])
+            wks.update_title(worksheetName)
+        wks.update(namedRange, values, value_input_option="USER_ENTERED")
+
+    def get_json(self):
+        with open(self.json_path, "r") as json_file:
+            return json.load(json_file)["Test Cases"]
+
     def get_values_by_named_range(self, worksheetName, namedRange):
         wks = self.ss.worksheet(worksheetName)
         return wks.get(namedRange)
 
-    def upload_the_gsheet_file_to_folder(self):
-        # Move the newly created spreadsheet to the desired folder
-        drive_service = build("drive", "v3", credentials=self.sa.auth)
-        drive_service.files().update(fileId=self.__newSs.id, addParents=self.__folderId, fields="id,parents").execute()
-
-    def save_data_to_json(self):
-        # Write data to the JSON file
-        try:
-            with open(self.json_path, "w") as json_file:
-                json.dump(self.scenarioResult, json_file, indent=4)  # Use indent for pretty formatting
-        except Exception as e:
-            print(f"An error happened when trying to save the result data to {self.json_path}: \n{e}")
-
-    def get_json(self):
-        # Read data from the JSON file
-        with open(self.json_path, "r") as json_file:
-            return json.load(json_file)
-
-    def update_all_values(self, useJSON=False):
-        if useJSON:  # to get the result data from self.json_path
-            data = self.get_json()
-        else:  # to get the result data from the test execution, and will try to save the data to self.json_path
-            data = self.scenarioResult
-
+    def update_all_values(self):
+        data = self.get_json()
         if data:
             # create a new file (the duplicate of the target file)
             self.create_a_copy_of_gsheet_file()
@@ -112,12 +86,8 @@ class GSheetStateSXT(GSheet):
         else:
             print("No test result when updating all values in Google Sheet")
 
-    def update_worksheet_colors(self, useJSON=False):
-        if useJSON:
-            data = self.get_json()
-        else:
-            data = self.scenarioResult
-
+    def update_worksheet_colors(self):
+        data = self.get_json()
         if data:
             for wksName in data:
                 wksId = self.__newSs.worksheet(wksName).id
@@ -164,3 +134,8 @@ class GSheetStateSXT(GSheet):
                 self.__newSs.batch_update({"requests": requestsBatch})
         else:
             print("No test result when updating worksheet colors in Google Sheet")
+
+    def upload_the_gsheet_file_to_folder(self):
+        # Move the newly created spreadsheet to the desired folder
+        drive_service = build("drive", "v3", credentials=self.sa.auth)
+        drive_service.files().update(fileId=self.__newSs.id, addParents=self.__folderId, fields="id,parents").execute()

@@ -21,12 +21,24 @@ class FormDriver:
         self.mkd = MouseKeysDriver(driver)
         self.wd = WaitDriver(driver, duration)
 
+    def check_a_box(self, element: WebElement, isChecked: bool):
+        if element.is_selected():
+            None if isChecked else element.click()
+        else:
+            element.click() if isChecked else None
+
+    def get_selected_option(
+        self,
+        element: WebElement,
+    ):
+        return Select(element).first_selected_option
+
     def insert_to_textbox(
         self,
         element: Union[WebElement, Callable[[], WebElement]],
         input: str,
         byEnter: bool = False,
-        sleep: float = 0.45,
+        sleep: float = 0.5,
         onFocus: bool = False,
     ) -> None:
         """
@@ -48,6 +60,7 @@ class FormDriver:
                 element = element()
             if onFocus:
                 self.mkd.scrolling(element)
+
             self.ac.pause(sleep).click(element).send_keys(Keys.END).key_down(Keys.SHIFT).send_keys(Keys.HOME).key_up(Keys.SHIFT).send_keys(Keys.BACKSPACE).send_keys(
                 input
             ).perform()
@@ -62,6 +75,40 @@ class FormDriver:
             # textbox_element.clear()
             # textbox_element.send_keys(input)
             # textbox_element.send_keys(Keys.ENTER)
+
+    def select_opt_in_dropdown(
+        self,
+        element: Union[WebElement, Callable[[], WebElement]],
+        option,
+        method="visible_text",
+        onFocus: bool = False,
+    ):
+        if option:
+            if isinstance(element, Callable):
+                element = element()
+            if onFocus:
+                self.mkd.scrolling(element)
+
+            select = Select(element)
+            if method == "value":
+                select.select_by_value(option)
+            elif method == "visible_text":
+                select.select_by_visible_text(option)
+
+    def select_opt_in_radio(
+        self,
+        elements: Union[list[WebElement], Callable[[], list[WebElement]]],
+        option: str,
+    ):
+        if isinstance(elements, Callable):
+            elements = elements()
+        clickables, menus = [
+            [c for c in elements[::2]],
+            [str(m.text).lower() for m in elements[1::2]],
+        ]
+        index = menus.index(option.lower())
+        if index:
+            clickables[index].click()
 
     def select_period(
         self,
@@ -163,43 +210,3 @@ class FormDriver:
                 select_date(selected_date=str(end_date[2]))
 
             date_input_element.click()
-
-    def select_opt_in_dropdown(
-        self,
-        element: Union[WebElement, Callable[[], WebElement]],
-        option,
-        method="visible_text",
-        onFocus: bool = False,
-    ):
-        if option:
-            if isinstance(element, Callable):
-                element = element()
-            if onFocus:
-                self.mkd.scrolling(element)
-            select = Select(element)
-
-            if method == "value":
-                select.select_by_value(option)
-            elif method == "visible_text":
-                select.select_by_visible_text(option)
-
-    def select_opt_in_radio(
-        self,
-        elements: Union[list[WebElement], Callable[[], list[WebElement]]],
-        option: str,
-    ):
-        if isinstance(elements, Callable):
-            elements = elements()
-        clickables, menus = [
-            [c for c in elements[::2]],
-            [str(m.text).lower() for m in elements[1::2]],
-        ]
-        index = menus.index(option.lower())
-        if index:
-            clickables[index].click()
-
-    def check_a_box(self, element: WebElement, isChecked: bool):
-        if element.is_selected():
-            None if isChecked else element.click()
-        else:
-            element.click() if isChecked else None

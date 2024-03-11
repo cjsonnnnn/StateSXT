@@ -1,33 +1,31 @@
 import pytest
 
-from database.service import DBService
+# from database.service import DBService
 from base.base_driver import BaseDriver
-from ._fixtures.option_fixture import *
-from ._fixtures.composition_fixture import *
+from ._fixtures.composition import *
+from ._fixtures.auth import *
+from ._fixtures.option import *
+from ._fixtures.param import *
 
 
 @pytest.fixture(scope="class")
-@pytest.mark.usefixtures("logger")
-@pytest.mark.usefixtures("browser")
-@pytest.mark.usefixtures("gsheet")
-@pytest.mark.usefixtures("email")
-def setup(request, logger, browser, gsheet, email):
+def setup(request, logger, browser, domain, service_account, store):
     logger
 
     # setup driver
-    base = BaseDriver(browser, fullscreen=True)
+    base = BaseDriver(browser, domain, fullscreen=True)
 
     # setup service
-    service = DBService()
-    service.start()
+    # service = DBService(domain)
+    # service.start()
 
     # set requests
     request.cls.base = base
-    request.cls.service = service
-    request.cls.gsheet = gsheet
-    request.cls.email = email
+    request.cls.sa = service_account
+    request.cls.store = store
+    # request.cls.service = service
 
     yield
 
-    service.end()
+    # service.end()
     base.exit()

@@ -1,14 +1,15 @@
 from abc import ABC, abstractmethod
 from dotenv import load_dotenv
+import warnings
 
 from base.base_driver import BaseDriver
 from base.wait import MyBy
 
-# looding all env variables
+# looding all env variables and ignoring a certain warning
 load_dotenv()
+warnings.filterwarnings("ignore", message="Worksheet.update.*method signature will change.*")
 
 
-# Interface
 class StateInterface(ABC):
     """
     An abstract class for all the state interface classes
@@ -22,7 +23,6 @@ class StateInterface(ABC):
         return self.__bd
 
 
-# Page
 class Page(ABC):
     """A parent class of all specific page classes."""
 
@@ -42,12 +42,11 @@ class Page(ABC):
     def changeState(self):
         pass
 
-    @abstractmethod
+    # @abstractmethod
     def resetState(self):
         pass
 
 
-# Locator
 class Locator:
     """A parent class of all page locator classes."""
 

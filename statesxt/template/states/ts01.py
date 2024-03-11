@@ -5,11 +5,8 @@ class ExampleInitState(ExampleInterface):
     def __init__(self, base, contextPage) -> None:
         super().__init__(base, contextPage)
 
-    def changeLanguage(self, lang):
+    def exampleTransition(self, exampleParam):
         # required process
-        if lang in self.p.jpnFormats:
-            self.bd.mkd.clicking(self.p.lr.JPN_FLAG_BUTTON(), sleep=0)
-        elif lang in self.p.engFormats:
-            self.bd.mkd.clicking(self.p.lr.ENG_FLAG_BUTTON(), sleep=0)
+        self.bd.fd.insert_to_textbox(self.p.lr.exampleLocator1(), exampleParam)
         # transition
         self.p.changeState(ExampleInitState(self.bd, self.p))

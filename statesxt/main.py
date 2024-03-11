@@ -14,13 +14,77 @@ class StateSXT:
             ".env.template",
             ".gitignore",
             "named_ranges.py",
-            "retry.py",
-            "track.json",
+            "restate.py",
+            "results.json",
             "pyproject.toml",
             "pytest.ini",
             "README.md",
             "tox.ini",
         ]
+        self.deprs = {
+            ".github": {
+                "depr": [],
+                "workflows": {
+                    "depr": [],
+                    "test.yml": {"depr": []},
+                },
+            },
+            "base": {
+                "depr": [],
+                "__init__.py": {"depr": []},
+                "base_driver.py": {"depr": []},
+                "check.py": {"depr": []},
+                "form.py": {"depr": []},
+                "mouse_keys.py": {"depr": []},
+                "table.py": {"depr": []},
+                "wait.py": {"depr": []},
+            },
+            "database": {
+                "depr": [],
+                "__init__.py": {"depr": []},
+                "database.py": {"depr": []},
+                "queries.py": {"depr": []},
+                "service.py": {"depr": []},
+            },
+            "testcases": {
+                "depr": [],
+                "_fixtures.py": {
+                    "depr": [],
+                    "__init__.py": {"depr": []},
+                    "auth.py": {"depr": ["login_fixture.py"]},
+                    "composition.py": {"depr": ["composition_fixture.py"]},
+                    "option.py": {"depr": ["option_fixture.py"]},
+                    "param.py": {"depr": []},
+                },
+                "__init__.py": {"depr": []},
+                "conftest.py": {"depr": []},
+            },
+            "utils": {
+                "depr": [],
+                "__init__.py": {"depr": []},
+                "crypter.py": {"depr": []},
+                "email.py": {"depr": []},
+                "explicit_wait.py": {"depr": ["explicit.py"]},
+                "faker.py": {"depr": []},
+                "file_opener.py": {"depr": []},
+                "formatter.py": {"depr": []},
+                "logger.py": {"depr": []},
+                "response_handler.py": {"depr": []},
+                "service_account.py": {"depr": ["gsheet.py"]},
+                "store.py": {"depr": []},
+                "wrapper.py": {"depr": []},
+            },
+            ".env.template": {"depr": [".env-template"]},
+            ".gitignore": {"depr": []},
+            "named_ranges.py": {"depr": ["rename_named_ranges.py"]},
+            "restate.py": {"depr": ["retry.py", "execute_json.py"]},
+            "results.json": {"depr": ["track.json", "last_run_data.json"]},
+            "pyproject.toml": {"depr": []},
+            "pytest.ini": {"depr": []},
+            "README.md": {"depr": []},
+            "tox.ini": {"depr": []},
+        }
+
         self.sourcedir = os.path.dirname(os.path.realpath(__file__))
         self.destdir = os.getcwd()
         self.destdirname = self.destdir.split("\\")[-1]
@@ -151,9 +215,7 @@ class StateSXT:
                 # print(f"subSkipped: {subSkipped}\n")
 
                 if (subSkipped not in sub) or (subSkipped not in subSplits):  # condition: when updateOpt tells to update folder entirely
-                    # print(1)
                     if os.path.exists(os.path.join(self.sourcedir, sub)) and (sub != ""):  # condition: check if the folder exists in source, and asking update to folder
-                        # print(2)
                         updateOpt = self.toConfirm(
                             input(
                                 " \u27b1 " * depth
@@ -249,7 +311,7 @@ class StateSXT:
     def cli(self):
         parser = argparse.ArgumentParser(description="Generate Directories")
         parser.add_argument("opt", help="Action to perform: 'generate', 'remove', 'update', and 'create-page'", choices=["generate", "remove", "update", "create-page"])
-        parser.add_argument("--version", "-v", action="version", version="StateSXT 0.4.6")
+        parser.add_argument("--version", "-v", action="version", version="StateSXT 0.5.0")
         args = parser.parse_args()
 
         if str(args.opt).lower() == "generate":
