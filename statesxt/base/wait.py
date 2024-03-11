@@ -41,7 +41,6 @@ class WaitDriver:
         if cusdur > 0:
             self.wdw._timeout = cusdur
         if cusfreq != 0.5:
-            print("IYOHHH")
             self.wdw._poll = cusfreq
         # get
         res = self.wdw.until(EC.presence_of_all_elements_located((by, locator)))

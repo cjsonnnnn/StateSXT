@@ -22,67 +22,17 @@ class StateSXT:
             "tox.ini",
         ]
         self.deprs = {
-            ".github": {
-                "depr": [],
-                "workflows": {
-                    "depr": [],
-                    "test.yml": {"depr": []},
-                },
-            },
-            "base": {
-                "depr": [],
-                "__init__.py": {"depr": []},
-                "base_driver.py": {"depr": []},
-                "check.py": {"depr": []},
-                "form.py": {"depr": []},
-                "mouse_keys.py": {"depr": []},
-                "table.py": {"depr": []},
-                "wait.py": {"depr": []},
-            },
-            "database": {
-                "depr": [],
-                "__init__.py": {"depr": []},
-                "database.py": {"depr": []},
-                "queries.py": {"depr": []},
-                "service.py": {"depr": []},
-            },
-            "testcases": {
-                "depr": [],
-                "_fixtures.py": {
-                    "depr": [],
-                    "__init__.py": {"depr": []},
-                    "auth.py": {"depr": ["login_fixture.py"]},
-                    "composition.py": {"depr": ["composition_fixture.py"]},
-                    "option.py": {"depr": ["option_fixture.py"]},
-                    "param.py": {"depr": []},
-                },
-                "__init__.py": {"depr": []},
-                "conftest.py": {"depr": []},
-            },
-            "utils": {
-                "depr": [],
-                "__init__.py": {"depr": []},
-                "crypter.py": {"depr": []},
-                "email.py": {"depr": []},
-                "explicit_wait.py": {"depr": ["explicit.py"]},
-                "faker.py": {"depr": []},
-                "file_opener.py": {"depr": []},
-                "formatter.py": {"depr": []},
-                "logger.py": {"depr": []},
-                "response_handler.py": {"depr": []},
-                "service_account.py": {"depr": ["gsheet.py"]},
-                "store.py": {"depr": []},
-                "wrapper.py": {"depr": []},
-            },
-            ".env.template": {"depr": [".env-template"]},
-            ".gitignore": {"depr": []},
-            "named_ranges.py": {"depr": ["rename_named_ranges.py"]},
-            "restate.py": {"depr": ["retry.py", "execute_json.py"]},
-            "results.json": {"depr": ["track.json", "last_run_data.json"]},
-            "pyproject.toml": {"depr": []},
-            "pytest.ini": {"depr": []},
-            "README.md": {"depr": []},
-            "tox.ini": {"depr": []},
+            "login_fixture.py": "auth.py",
+            "composition_fixture.py": "composition.py",
+            "option_fixture.py": "option.py",
+            "explicit_wait.py": "explicit.py",
+            "gsheet.py": "service_account.py",
+            ".env-template.py": ".env.template",
+            "rename_named_ranges.py": "named_ranges.py",
+            "execute_json.py": "restate.py",
+            "retry.py": "restate.py",
+            "track.json": "results.json",
+            "last_run_data.json": "results.json",
         }
 
         self.sourcedir = os.path.dirname(os.path.realpath(__file__))
@@ -159,8 +109,10 @@ class StateSXT:
         # summary
         if rate == len(self.tree):
             print(f"{self.ansi['success']}All templates created in {self.obj(self.destdir)}{self.ansi['reset']}")
+        elif rate == 1:
+            print(f"\n{self.ansi['success']}A template created in {self.obj(self.destdir)}{self.ansi['warn']}, but {len(self.tree)-rate} failed.{self.ansi['reset']}")
         elif rate >= 1:
-            print(f"\n{self.ansi['success']}{rate} template/-s created in {self.obj(self.destdir)}{self.ansi['warn']}, but {len(self.tree)-rate} failed.{self.ansi['reset']}")
+            print(f"\n{self.ansi['success']}{rate} templates created in {self.obj(self.destdir)}{self.ansi['warn']}, but {len(self.tree)-rate} failed.{self.ansi['reset']}")
         else:
             print(f"\n{self.ansi['error']}All templates failed to create in {self.obj(self.destdir)}{self.ansi['reset']}")
 
@@ -186,8 +138,15 @@ class StateSXT:
             # summary
             if rate == len(self.tree):
                 print(f"{self.ansi['success']}All templates removed from {self.obj(self.destdir)}{self.ansi['reset']}")
+            elif rate == 1:
+
+                print(
+                    f"\n{self.ansi['success']}{rate}A template has been removed from {self.obj(self.destdir)}{self.ansi['warn']}, but {len(self.tree)-rate} failed.{self.ansi['reset']}"
+                )
             elif rate > 1:
-                print(f"\n{self.ansi['success']}{rate} template/-s removed from {self.obj(self.destdir)}{self.ansi['warn']}, but {len(self.tree)-rate} failed.{self.ansi['reset']}")
+                print(
+                    f"\n{self.ansi['success']}{rate} templates have been removed from {self.obj(self.destdir)}{self.ansi['warn']}, but {len(self.tree)-rate} failed.{self.ansi['reset']}"
+                )
             else:
                 print(f"\n{self.ansi['error']}All templates failed to remove from {self.obj(self.destdir)}{self.ansi['reset']}")
 
@@ -198,11 +157,12 @@ class StateSXT:
         if isProceeded:
             # deep-loop over self.tree and gather the choices
             choices = []
-            defaultSubSkipped = "C:\\"
-            subSkipped = defaultSubSkipped
+            defaultSkippedSub = "C:\\"
+            skippedSub = defaultSkippedSub
             for destpath, dirs, files in os.walk(self.destdir):
                 sub = str(destpath).split(self.destdir + "\\")[-1] if (destpath != self.destdir) else ""
                 subSplits = sub.split("\\")
+                pathname = subSplits[-1]
                 depth = len(subSplits) - 1
 
                 # print(f"\nself.destdir: {self.destdir}")
@@ -212,10 +172,14 @@ class StateSXT:
                 # print(f"sub: {sub}")
                 # print(f"subSplits: {subSplits}")
                 # print(f"depth: {depth}")
-                # print(f"subSkipped: {subSkipped}\n")
+                # print(f"pathname: {pathname}")
+                # print(f"subSkipped: {skippedSub}\n")
 
-                if (subSkipped not in sub) or (subSkipped not in subSplits):  # condition: when updateOpt tells to update folder entirely
-                    if os.path.exists(os.path.join(self.sourcedir, sub)) and (sub != ""):  # condition: check if the folder exists in source, and asking update to folder
+                if (skippedSub not in sub) or (skippedSub not in subSplits):
+                    isRenamed = pathname in self.deprs
+                    if (os.path.exists(os.path.join(self.sourcedir, sub)) or isRenamed) and (
+                        sub != ""
+                    ):  # condition: check if the folder exists in source, and asking update to folder
                         updateOpt = self.toConfirm(
                             input(
                                 " \u27b1 " * depth
@@ -223,18 +187,20 @@ class StateSXT:
                             ),
                             adds=["select"],
                         )
-                        subSkipped = (
-                            sub if (updateOpt != "select") else defaultSubSkipped
+                        skippedSub = (
+                            sub if (updateOpt != "select") else defaultSkippedSub
                         )  # if updateOpt is not 'select' then the next iteration will not check the files/folders within
                         if updateOpt == True:
-                            choices.append([sub, "folder"])
+                            choices.append([os.path.join("//".join(subSplits[:-1]), self.deprs[pathname]) if isRenamed else sub, "folder", sub if isRenamed else None])
 
-                    if (subSkipped not in sub) and (subSkipped not in subSplits):  # condition: when updateOpt tells to update folder entirely
+                    if (skippedSub not in sub) and (skippedSub not in subSplits):  # condition: when updateOpt tells to update folder entirely
                         for file in files:  # condition: loop over files within destpath, and asking update to files
-                            pSub = os.path.join(sub, file)
+                            pathname = file
+                            pSub = os.path.join(sub, pathname)
                             psubSplits = pSub.split("\\")
                             depth = len(psubSplits) - 1
-                            if os.path.exists(os.path.join(self.sourcedir, pSub)):  # condition: check if the file exists in source
+                            isRenamed = pathname in self.deprs
+                            if os.path.exists(os.path.join(self.sourcedir, pSub)) or isRenamed:  # condition: check if the file exists in source
                                 updateOpt = self.toConfirm(
                                     input(
                                         " \u27b1 " * depth
@@ -242,7 +208,7 @@ class StateSXT:
                                     ),
                                 )
                                 if updateOpt:
-                                    choices.append([pSub, "file"])
+                                    choices.append([os.path.join(sub, self.deprs[pathname]) if isRenamed else pSub, "file", pSub if isRenamed else None])
 
             print()
             # loop over the choices and update
@@ -252,14 +218,14 @@ class StateSXT:
 
                 if c[1] == "folder":
                     try:
-                        shutil.rmtree(destpath)
+                        shutil.rmtree(os.path.join(self.destdir, c[2]) if c[2] else destpath)
                         shutil.copytree(sourcepath, destpath)
                         print(f"{self.ansi['success']}Folder {self.obj(c[0])} updated successfully{self.ansi['reset']}")
                     except Exception as e:
                         print(f"{self.ansi['error']}Folder {self.obj(c[0])} failed to update{self.ansi['reset']}")
                 elif c[1] == "file":
                     try:
-                        os.remove(destpath)
+                        os.remove(os.path.join(self.destdir, c[2]) if c[2] else destpath)
                         shutil.copy2(sourcepath, destpath)
                         print(f"{self.ansi['success']}File {self.obj(c[0])} updated successfully{self.ansi['reset']}")
                     except Exception as e:
@@ -311,7 +277,7 @@ class StateSXT:
     def cli(self):
         parser = argparse.ArgumentParser(description="Generate Directories")
         parser.add_argument("opt", help="Action to perform: 'generate', 'remove', 'update', and 'create-page'", choices=["generate", "remove", "update", "create-page"])
-        parser.add_argument("--version", "-v", action="version", version="StateSXT 0.5.0")
+        parser.add_argument("-v", "--version", action="version", version="StateSXT 0.5.0")
         args = parser.parse_args()
 
         if str(args.opt).lower() == "generate":
@@ -323,7 +289,7 @@ class StateSXT:
         elif str(args.opt).lower() == "create-page":
             self.createPage()
         else:
-            print("statesxt does not has such command.")
+            print("StateSXT does not has such command.")
 
 
 def main():
