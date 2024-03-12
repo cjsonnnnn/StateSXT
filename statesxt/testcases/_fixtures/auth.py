@@ -15,7 +15,7 @@ def auth(request):
     try:
         LoginPage(request.cls.base).login(
             accounts[request.cls.role]["username"],
-            accounts["admin"]["password"],
+            accounts[request.cls.role]["password"],
         )
         yield
         TopMenuPage(request.cls.base).logout()

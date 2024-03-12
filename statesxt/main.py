@@ -27,7 +27,7 @@ class StateSXT:
             rf"testcases\_fixtures\option_fixture.py": rf"testcases\_fixtures\option.py",
             rf"utils\explicit_wait.py": rf"utils\explicit.py",
             rf"utils\gsheet.py": rf"utils\service_account.py",
-            rf".env-template.py": rf".env.template",
+            rf".env-template": rf".env.template",
             rf"rename_named_ranges.py": rf"named_ranges.py",
             rf"execute_json.py": rf"restate.py",
             rf"retry.py": rf"restate.py",
@@ -268,7 +268,7 @@ class StateSXT:
     def cli(self):
         parser = argparse.ArgumentParser(description="Generate Directories")
         parser.add_argument("opt", help="Action to perform: 'generate', 'remove', 'update', and 'create-page'", choices=["generate", "remove", "update", "create-page"])
-        parser.add_argument("-v", "--version", action="version", version="StateSXT 0.5.1")
+        parser.add_argument("-v", "--version", action="version", version="StateSXT 0.5.3")
         args = parser.parse_args()
 
         if str(args.opt).lower() == "generate":

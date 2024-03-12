@@ -12,7 +12,7 @@ def admin(request):
 
 
 @pytest.fixture(scope="class")
-def managaer(request):
+def manager(request):
     request.cls.role = "manager"
 
 
@@ -30,44 +30,44 @@ def supervisor(request):
 
 
 """
-Set State
+Set Use Case
 """
 
 
 # region
 @pytest.fixture(scope="class")
-def state1(request):
-    request.cls.state = 1
+def usecase1(request):
+    request.cls.usecase = 1
 
 
 @pytest.fixture(scope="class")
-def state2(request):
-    request.cls.state = 2
+def usecase2(request):
+    request.cls.usecase = 2
 
 
 @pytest.fixture(scope="class")
-def state3(request):
-    request.cls.state = 3
+def usecase3(request):
+    request.cls.usecase = 3
 
 
 @pytest.fixture(scope="class")
-def state5(request):
-    request.cls.state = 4
+def usecase5(request):
+    request.cls.usecase = 4
 
 
 @pytest.fixture(scope="class")
-def state5(request):
-    request.cls.state = 5
+def usecase5(request):
+    request.cls.usecase = 5
 
 
 @pytest.fixture(scope="class")
-def state6(request):
-    request.cls.state = 6
+def usecase6(request):
+    request.cls.usecase = 6
 
 
 @pytest.fixture(scope="class")
-def state7(request):
-    request.cls.state = 7
+def usecase7(request):
+    request.cls.usecase = 7
 
 
 # endregion

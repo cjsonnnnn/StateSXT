@@ -6,7 +6,7 @@ class ExampleInitState(ExampleInterface):
         super().__init__(base, contextPage)
 
     def exampleTransition(self, exampleParam):
-        # required process
+        """Required Process"""
         self.bd.fd.insert_to_textbox(self.p.lr.exampleLocator1(), exampleParam)
-        # transition
+        """Transition"""
         self.p.changeState(ExampleInitState(self.bd, self.p))

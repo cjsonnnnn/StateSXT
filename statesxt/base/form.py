@@ -107,8 +107,7 @@ class FormDriver:
             [str(m.text).lower() for m in elements[1::2]],
         ]
         index = menus.index(option.lower())
-        if index:
-            clickables[index].click()
+        clickables[index].click()
 
     def select_period(
         self,
