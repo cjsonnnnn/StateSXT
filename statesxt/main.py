@@ -22,17 +22,18 @@ class StateSXT:
             "tox.ini",
         ]
         self.deprs = {
-            "login_fixture.py": "auth.py",
-            "composition_fixture.py": "composition.py",
-            "option_fixture.py": "option.py",
-            "explicit_wait.py": "explicit.py",
-            "gsheet.py": "service_account.py",
-            ".env-template.py": ".env.template",
-            "rename_named_ranges.py": "named_ranges.py",
-            "execute_json.py": "restate.py",
-            "retry.py": "restate.py",
-            "track.json": "results.json",
-            "last_run_data.json": "results.json",
+            rf"testcases\_fixtures\login_fixture.py": rf"testcases\_fixtures\auth.py",
+            rf"testcases\_fixtures\composition_fixture.py": rf"testcases\_fixtures\composition.py",
+            rf"testcases\_fixtures\option_fixture.py": rf"testcases\_fixtures\option.py",
+            rf"utils\explicit_wait.py": rf"utils\explicit.py",
+            rf"utils\gsheet.py": rf"utils\service_account.py",
+            rf".env-template.py": rf".env.template",
+            rf"rename_named_ranges.py": rf"named_ranges.py",
+            rf"execute_json.py": rf"restate.py",
+            rf"retry.py": rf"restate.py",
+            rf"track.json": rf"results.json",
+            rf"last_run_data.json": rf"results.json",
+            rf"testcases\fixtures": rf"testcases\_fixtures",
         }
 
         self.sourcedir = os.path.dirname(os.path.realpath(__file__))
@@ -165,18 +166,8 @@ class StateSXT:
                 pathname = subSplits[-1]
                 depth = len(subSplits) - 1
 
-                # print(f"\nself.destdir: {self.destdir}")
-                # print(f"destpath: {destpath}")
-                # print(f"dirs: {dirs}")
-                # print(f"files: {files}")
-                # print(f"sub: {sub}")
-                # print(f"subSplits: {subSplits}")
-                # print(f"depth: {depth}")
-                # print(f"pathname: {pathname}")
-                # print(f"subSkipped: {skippedSub}\n")
-
                 if (skippedSub not in sub) or (skippedSub not in subSplits):
-                    isRenamed = pathname in self.deprs
+                    isRenamed = sub in self.deprs
                     if (os.path.exists(os.path.join(self.sourcedir, sub)) or isRenamed) and (
                         sub != ""
                     ):  # condition: check if the folder exists in source, and asking update to folder
@@ -191,7 +182,7 @@ class StateSXT:
                             sub if (updateOpt != "select") else defaultSkippedSub
                         )  # if updateOpt is not 'select' then the next iteration will not check the files/folders within
                         if updateOpt == True:
-                            choices.append([os.path.join("//".join(subSplits[:-1]), self.deprs[pathname]) if isRenamed else sub, "folder", sub if isRenamed else None])
+                            choices.append([self.deprs[sub] if isRenamed else sub, "folder", sub if isRenamed else None])
 
                     if (skippedSub not in sub) and (skippedSub not in subSplits):  # condition: when updateOpt tells to update folder entirely
                         for file in files:  # condition: loop over files within destpath, and asking update to files
@@ -199,7 +190,7 @@ class StateSXT:
                             pSub = os.path.join(sub, pathname)
                             psubSplits = pSub.split("\\")
                             depth = len(psubSplits) - 1
-                            isRenamed = pathname in self.deprs
+                            isRenamed = pSub in self.deprs
                             if os.path.exists(os.path.join(self.sourcedir, pSub)) or isRenamed:  # condition: check if the file exists in source
                                 updateOpt = self.toConfirm(
                                     input(
@@ -208,7 +199,7 @@ class StateSXT:
                                     ),
                                 )
                                 if updateOpt:
-                                    choices.append([os.path.join(sub, self.deprs[pathname]) if isRenamed else pSub, "file", pSub if isRenamed else None])
+                                    choices.append([self.deprs[pSub] if isRenamed else pSub, "file", pSub if isRenamed else None])
 
             print()
             # loop over the choices and update
@@ -277,7 +268,7 @@ class StateSXT:
     def cli(self):
         parser = argparse.ArgumentParser(description="Generate Directories")
         parser.add_argument("opt", help="Action to perform: 'generate', 'remove', 'update', and 'create-page'", choices=["generate", "remove", "update", "create-page"])
-        parser.add_argument("-v", "--version", action="version", version="StateSXT 0.5.0")
+        parser.add_argument("-v", "--version", action="version", version="StateSXT 0.5.1")
         args = parser.parse_args()
 
         if str(args.opt).lower() == "generate":

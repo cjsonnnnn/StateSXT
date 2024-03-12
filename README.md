@@ -6,10 +6,9 @@
 ## How to Install?
 There are two approaches to install the package:
 - Manually cloning the project in Github repository: [statesxt](https://github.com/jsonnnnn/statesxt)
-- Using `pip`, that the package is hosted in [here](https://test.pypi.org/project/statesxt/) <b>(recommended)</b>. 
-  Currently, due to the Pypi repository being down and is blocking any account registers and project uploads, the package is now hosted on TestPypi for the time being.
+- Using `pip`, that the package is hosted in [here](https://pypi.org/project/statesxt/#description) <b>(recommended)</b>. 
   ``` console
-  pip install -i https://test.pypi.org/simple/ statesxt
+  pip install statesxt
   ```
 
 > **Note:** It is always better to install the package in a virtual environment.

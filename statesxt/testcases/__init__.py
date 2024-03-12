@@ -42,7 +42,7 @@ class Page(ABC):
     def changeState(self):
         pass
 
-    # @abstractmethod
+    @abstractmethod
     def resetState(self):
         pass
 
