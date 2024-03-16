@@ -3,7 +3,6 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.edge.webdriver import WebDriver
-from selenium.webdriver.common.keys import Keys
 from typing import Callable
 from typing import Union
 import time as t
@@ -22,20 +21,21 @@ class MouseKeysDriver:
         self,
         element: Union[WebElement, Callable[[], WebElement]],
         isClick: bool = True,
-        sleep: float = 0.36,
+        useJS: bool = True,
+        onFocus: bool = False,
+        sleep: float = None,
         steps: int = None,
         block: str = "center",
-        useJS: bool = True,
     ) -> None:
         if isClick:
             if isinstance(element, Callable):
                 element = element()
-            if sleep >= 1:
+            if onFocus or sleep:
                 self.scrolling(
                     element=element,
+                    sleep=sleep,
                     steps=steps,
                     block=block,
-                    sleep=sleep,
                 )
             # click the element
             (
@@ -52,12 +52,13 @@ class MouseKeysDriver:
         element: Union[WebElement, Callable[[], WebElement]],
         isHover: bool = True,
         onFocus: bool = False,
+        sleep: float = None,
     ) -> None:
         if isHover:
             if isinstance(element, Callable):
                 element = element()
-            if onFocus:
-                self.scrolling(element)
+            if onFocus or sleep:
+                self.scrolling(element, sleep)
             self.ac.move_to_element(element).perform()
             self.ac.reset_actions()
 
@@ -127,9 +128,9 @@ class MouseKeysDriver:
     def scrolling(
         self,
         element: Union[WebElement, Callable[[], WebElement]] = None,
+        sleep: float = 0.75,
         steps: int = None,
         block: str = "center",
-        sleep: float = 0.75,
     ) -> None:
         """
         'block', defines vertical alignment.
@@ -138,6 +139,7 @@ class MouseKeysDriver:
         - 'end'
         - 'nearest'
         """
+        sleep = sleep if sleep else 0.75
 
         if element:
             if isinstance(element, Callable):

@@ -256,6 +256,7 @@ class StateSXT:
                             content = f.read()
                         content = content.replace("example", page_name.lower().replace(" ", "_"))
                         content = content.replace("Example", page_name.title().replace(" ", ""))
+                        content = content.replace("EXAMPLE", page_name.upper().replace(" ", ""))
                         with open(file_path, "w", encoding="utf-8") as f:
                             f.write(content)
 
@@ -268,7 +269,7 @@ class StateSXT:
     def cli(self):
         parser = argparse.ArgumentParser(description="Generate Directories")
         parser.add_argument("opt", help="Action to perform: 'generate', 'remove', 'update', and 'create-page'", choices=["generate", "remove", "update", "create-page"])
-        parser.add_argument("-v", "--version", action="version", version="StateSXT 0.5.3")
+        parser.add_argument("-v", "--version", action="version", version="StateSXT 0.5.6")
         args = parser.parse_args()
 
         if str(args.opt).lower() == "generate":

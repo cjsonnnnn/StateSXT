@@ -21,7 +21,15 @@ class FormDriver:
         self.mkd = MouseKeysDriver(driver)
         self.wd = WaitDriver(driver, duration)
 
-    def check_a_box(self, element: WebElement, isChecked: bool):
+    def check_a_box(
+        self,
+        element: WebElement,
+        isChecked: bool,
+        onFocus: bool = False,
+        sleep: float = None,
+    ):
+        if onFocus or sleep:
+            self.mkd.scrolling(element, sleep)
         if element.is_selected():
             None if isChecked else element.click()
         else:
@@ -38,8 +46,8 @@ class FormDriver:
         element: Union[WebElement, Callable[[], WebElement]],
         input: str,
         byEnter: bool = False,
-        sleep: float = 0.5,
-        onFocus: bool = False,
+        onFocus: bool = True,
+        sleep: float = None,
     ) -> None:
         """
         Inserts string into a textbox element
@@ -58,15 +66,13 @@ class FormDriver:
         if input or (input == ""):
             if isinstance(element, Callable):
                 element = element()
-            if onFocus:
-                self.mkd.scrolling(element)
+            if onFocus or sleep:
+                self.mkd.scrolling(element, sleep)
 
-            self.ac.pause(sleep).click(element).send_keys(Keys.END).key_down(Keys.SHIFT).send_keys(Keys.HOME).key_up(Keys.SHIFT).send_keys(Keys.BACKSPACE).send_keys(
-                input
-            ).perform()
+            self.ac.click(element).send_keys(Keys.END).key_down(Keys.SHIFT).send_keys(Keys.HOME).key_up(Keys.SHIFT).send_keys(Keys.BACKSPACE).send_keys(input).perform()
 
             if byEnter:
-                self.ac.pause(sleep).send_keys(Keys.ENTER).perform()
+                self.ac.send_keys(Keys.ENTER).perform()
 
             self.ac.reset_actions()
 
@@ -82,12 +88,13 @@ class FormDriver:
         option,
         method="visible_text",
         onFocus: bool = False,
+        sleep: float = None,
     ):
         if option:
             if isinstance(element, Callable):
                 element = element()
-            if onFocus:
-                self.mkd.scrolling(element)
+            if onFocus or sleep:
+                self.mkd.scrolling(element, sleep)
 
             select = Select(element)
             if method == "value":
@@ -99,6 +106,8 @@ class FormDriver:
         self,
         elements: Union[list[WebElement], Callable[[], list[WebElement]]],
         option: str,
+        onFocus: bool = False,
+        sleep: float = None,
     ):
         if isinstance(elements, Callable):
             elements = elements()
@@ -107,6 +116,8 @@ class FormDriver:
             [str(m.text).lower() for m in elements[1::2]],
         ]
         index = menus.index(option.lower())
+        if onFocus or sleep:
+            self.mkd.scrolling(clickables[index], sleep)
         clickables[index].click()
 
     def select_period(
@@ -119,6 +130,7 @@ class FormDriver:
         date_per_week_locator,
         date_per_day_locator,
         onFocus: bool = False,
+        sleep: float = None,
     ):
         """
         Input value into the period element
@@ -133,8 +145,8 @@ class FormDriver:
         """
 
         if period:
-            if onFocus:
-                self.mkd.scrolling(date_input_element)
+            if onFocus or sleep:
+                self.mkd.scrolling(date_input_element, sleep)
 
             start_date: list[int]
             end_date: list[int]
