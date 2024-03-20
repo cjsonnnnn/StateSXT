@@ -1,4 +1,4 @@
-from .states.ts01 import ExampleInitState
+from .states.states_0_1 import ExampleInitState
 from .locator import ExampleLocator
 from .. import Page
 

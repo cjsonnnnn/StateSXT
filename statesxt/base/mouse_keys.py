@@ -22,7 +22,7 @@ class MouseKeysDriver:
         element: Union[WebElement, Callable[[], WebElement]],
         isClick: bool = True,
         useJS: bool = True,
-        onFocus: bool = False,
+        onFocus: bool = True,
         sleep: float = None,
         steps: int = None,
         block: str = "center",

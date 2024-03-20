@@ -87,3 +87,8 @@ class BaseDriver:
 
         self.__driver.get(url)
         self.focus_to()
+
+    def refresh(self) -> None:
+        """Refreshes the browser"""
+
+        self.__driver.refresh()
