@@ -29,17 +29,17 @@ class CheckDriver:
         """
 
         if isVisible:
-            eAlert = self.wd.an_element(By.CLASS_NAME, "toast-body")
+            alert = self.wd.an_element(By.CLASS_NAME, "toast-body")
             if isSuccess:
-                if eAlert.text == "success" or eAlert.text == cust_message:
+                if alert.text == "success" or alert.text == cust_message:
                     return True
             else:
-                if eAlert.text == "fail" or eAlert.text == cust_message:
+                if alert.text == "fail" or alert.text == cust_message:
                     return True
             return False
         else:
-            eAlert = self.wd.invisible(By.CLASS_NAME, "toast-body")
-            return True if eAlert else False
+            alert = self.wd.invisible(By.CLASS_NAME, "toast-body")
+            return True if alert else False
 
     def check_indicator_row(
         self,

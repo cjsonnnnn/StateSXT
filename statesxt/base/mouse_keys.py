@@ -3,6 +3,7 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.edge.webdriver import WebDriver
+from selenium.webdriver.common.keys import Keys
 from typing import Callable
 from typing import Union
 import time as t
@@ -20,14 +21,14 @@ class MouseKeysDriver:
     def clicking(
         self,
         element: Union[WebElement, Callable[[], WebElement]],
-        isClick: bool = True,
-        useJS: bool = True,
+        isClicked: bool = True,
         onFocus: bool = True,
         sleep: float = None,
         steps: int = None,
         block: str = "center",
+        useJS: bool = False,
     ) -> None:
-        if isClick:
+        if isClicked:
             if isinstance(element, Callable):
                 element = element()
             if onFocus or sleep:
@@ -37,7 +38,6 @@ class MouseKeysDriver:
                     steps=steps,
                     block=block,
                 )
-            # click the element
             (
                 self.__driver.execute_script(
                     "arguments[0].click();",
@@ -128,7 +128,7 @@ class MouseKeysDriver:
     def scrolling(
         self,
         element: Union[WebElement, Callable[[], WebElement]] = None,
-        sleep: float = 0.75,
+        sleep: float = 0.5,
         steps: int = None,
         block: str = "center",
     ) -> None:
@@ -139,7 +139,7 @@ class MouseKeysDriver:
         - 'end'
         - 'nearest'
         """
-        sleep = sleep if sleep else 0.75
+        sleep = sleep if sleep else 0.5
 
         if element:
             if isinstance(element, Callable):
@@ -157,8 +157,9 @@ class MouseKeysDriver:
                 )
                 t.sleep(sleep)
         else:
-            self.ac.scroll_by_amount(0, steps).pause(sleep).perform()
-            self.ac.reset_actions()
+            if steps:
+                self.ac.scroll_by_amount(0, steps).pause(sleep).perform()
+                self.ac.reset_actions()
 
     def zooming(self, zoom_percentage: float, sleep: int = 1) -> None:
         """

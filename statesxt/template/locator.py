@@ -10,5 +10,5 @@ class ExampleLocator(Locator):
 
     def setup(self):
         # flags
-        self.EXAMPLE_LOCATOR1 = lambda loc="exampleloc1": self.bd.wd.clickable(self.by.xpath, loc)
-        self.EXAMPLE_LOCATOR2 = lambda loc="exampleloc2": self.bd.wd.visible(self.by.xpath, loc)
+        self.SIMPLE_LOCATOR1 = lambda loc="simpleloc1": self.bd.wd.clickable(self.by.xpath, loc)
+        self.SIMPLE_LOCATOR2 = lambda loc="simpleloc2": self.bd.wd.visible(self.by.xpath, loc)

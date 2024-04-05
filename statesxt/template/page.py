@@ -1,19 +1,26 @@
-from .states.states_0_1 import ExampleInitState
+from .. import Page, StateInterface as SI
+from .states import *
 from .locator import ExampleLocator
-from .. import Page
+from .interface import ExampleInterface
 
 
 class ExamplePage(Page):
     """Example Page action methods"""
 
-    def __init__(self, base):
+    def __init__(self, base, usecase):
         super().__init__(base)
-        self.initState = ExampleInitState(base, self)
+        self.initState: ExampleInterface = self.setInitState(usecase)
         self.state = self.initState
         self.lr = ExampleLocator(base)
 
+    def setInitState(self, usecase):
+        dict = {
+            1: ExampleInitState(self.bd, self),
+        }
+        return dict[usecase]
+
     """
-    Methods: Abstract
+    Method: Abstracts
     """
 
     # region
@@ -26,17 +33,18 @@ class ExamplePage(Page):
     # endregion
 
     """
-    Methods: Interface
+    Method: Interfaces
     """
 
     # region ==> is a Python feature to freely collapsing code, ended with endregion
-    def exampleTransition(self, exampleParam):
-        return self.state.exampleTransition(exampleParam)
+    @SI.updateParam
+    def simpleTransition(self, simpleParam):
+        return self.state.simpleTransition()
 
     # endregion
 
     """
-    Methods: Specific
+    Method: Specifics
     """
     # region
     # endregion

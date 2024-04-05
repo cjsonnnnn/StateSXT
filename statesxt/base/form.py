@@ -48,6 +48,7 @@ class FormDriver:
         byEnter: bool = False,
         onFocus: bool = True,
         sleep: float = None,
+        isInserted: bool = True,
     ) -> None:
         """
         Inserts string into a textbox element
@@ -63,24 +64,25 @@ class FormDriver:
             None
         """
 
-        if input or (input == ""):
-            if isinstance(element, Callable):
-                element = element()
-            if onFocus or sleep:
-                self.mkd.scrolling(element, sleep)
+        if isInserted:
+            if input or (input == ""):
+                if isinstance(element, Callable):
+                    element = element()
+                if onFocus or sleep:
+                    self.mkd.scrolling(element, sleep)
 
-            self.ac.click(element).send_keys(Keys.END).key_down(Keys.SHIFT).send_keys(Keys.HOME).key_up(Keys.SHIFT).send_keys(Keys.BACKSPACE).send_keys(input).perform()
+                self.ac.click(element).send_keys(Keys.END).key_down(Keys.SHIFT).send_keys(Keys.HOME).key_up(Keys.SHIFT).send_keys(Keys.BACKSPACE).send_keys(input).perform()
 
-            if byEnter:
-                self.ac.send_keys(Keys.ENTER).perform()
+                if byEnter:
+                    self.ac.send_keys(Keys.ENTER).perform()
 
-            self.ac.reset_actions()
+                self.ac.reset_actions()
 
-            # for faster approach
-            # textbox_element.click()
-            # textbox_element.clear()
-            # textbox_element.send_keys(input)
-            # textbox_element.send_keys(Keys.ENTER)
+                # for faster approach
+                # textbox_element.click()
+                # textbox_element.clear()
+                # textbox_element.send_keys(input)
+                # textbox_element.send_keys(Keys.ENTER)
 
     def select_opt_in_dropdown(
         self,

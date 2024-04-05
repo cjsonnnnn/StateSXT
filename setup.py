@@ -5,7 +5,7 @@ with open("README.md", encoding="utf8") as file:
 
 setuptools.setup(
     name="statesxt",
-    version="0.5.7",
+    version="0.5.8",
     description="A project template for testing your website application.",
     long_description=LONG_DESC,
     long_description_content_type="text/markdown",

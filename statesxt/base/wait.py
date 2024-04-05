@@ -35,13 +35,15 @@ class WaitDriver:
         self.init_duration = duration
         self.wdw = WebDriverWait(driver, duration)
 
-    @Wrapper.exception_handling_returns_None
-    def all_elements(self, by: MyBy, locator, cusdur: float = 0, cusfreq: float = 0.5) -> list[WebElement]:
+    def all_elements(self, by: MyBy, locator, staleness_element=None, cusdur: float = 0, cusfreq: float = 0.5) -> list[WebElement]:
         # config
         if cusdur > 0:
             self.wdw._timeout = cusdur
         if cusfreq != 0.5:
             self.wdw._poll = cusfreq
+        # wait for staleness of another element
+        if staleness_element:
+            self.wdw.until(EC.staleness_of(staleness_element))
         # get
         res = self.wdw.until(EC.presence_of_all_elements_located((by, locator)))
         # reset
@@ -49,13 +51,15 @@ class WaitDriver:
         self.wdw._poll = 0.5
         return res
 
-    @Wrapper.exception_handling_returns_None
-    def an_element(self, by: MyBy, locator, cusdur: float = 0, cusfreq: float = 0.5) -> WebElement:
+    def an_element(self, by: MyBy, locator, staleness_element=None, cusdur: float = 0, cusfreq: float = 0.5) -> WebElement:
         # config
         if cusdur > 0:
             self.wdw._timeout = cusdur
         if cusfreq != 0.5:
             self.wdw._poll = cusfreq
+        # wait for staleness of another element
+        if staleness_element:
+            self.wdw.until(EC.staleness_of(staleness_element))
         # get
         res = self.wdw.until(EC.presence_of_element_located((by, locator)))
         # reset
@@ -63,13 +67,15 @@ class WaitDriver:
         self.wdw._poll = 0.5
         return res
 
-    @Wrapper.exception_handling_returns_None
-    def clickable(self, by: MyBy, locator, cusdur: float = 0, cusfreq: float = 0.5) -> WebElement:
+    def clickable(self, by: MyBy, locator, staleness_element=None, cusdur: float = 0, cusfreq: float = 0.5) -> WebElement:
         # config
         if cusdur > 0:
             self.wdw._timeout = cusdur
         if cusfreq != 0.5:
             self.wdw._poll = cusfreq
+        # wait for staleness of another element
+        if staleness_element:
+            self.wdw.until(EC.staleness_of(staleness_element))
         # get
         res = self.wdw.until(EC.element_to_be_clickable((by, locator)))
         # reset
@@ -77,13 +83,15 @@ class WaitDriver:
         self.wdw._poll = 0.5
         return res
 
-    @Wrapper.exception_handling_returns_None
-    def invisible(self, by: MyBy, locator, cusdur: float = 0, cusfreq: float = 0.5) -> bool:
+    def invisible(self, by: MyBy, locator, staleness_element=None, cusdur: float = 0, cusfreq: float = 0.5) -> bool:
         # config
         if cusdur > 0:
             self.wdw._timeout = cusdur
         if cusfreq != 0.5:
             self.wdw._poll = cusfreq
+        # wait for staleness of another element
+        if staleness_element:
+            self.wdw.until(EC.staleness_of(staleness_element))
         # get
         res = self.wdw.until(EC.invisibility_of_element_located((by, locator)))
         # reset
@@ -91,13 +99,15 @@ class WaitDriver:
         self.wdw._poll = 0.5
         return res
 
-    @Wrapper.exception_handling_returns_None
-    def visible(self, by: MyBy, locator, cusdur: float = 0, cusfreq: float = 0.5) -> WebElement:
+    def visible(self, by: MyBy, locator, staleness_element=None, cusdur: float = 0, cusfreq: float = 0.5) -> WebElement:
         # config
         if cusdur > 0:
             self.wdw._timeout = cusdur
         if cusfreq != 0.5:
             self.wdw._poll = cusfreq
+        # wait for staleness of another element
+        if staleness_element:
+            self.wdw.until(EC.staleness_of(staleness_element))
         # get
         res = self.wdw.until(EC.visibility_of_element_located((by, locator)))
         # reset

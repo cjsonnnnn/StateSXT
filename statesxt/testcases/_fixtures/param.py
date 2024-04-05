@@ -51,7 +51,7 @@ def usecase3(request):
 
 
 @pytest.fixture(scope="class")
-def usecase5(request):
+def usecase4(request):
     request.cls.usecase = 4
 
 

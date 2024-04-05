@@ -12,5 +12,5 @@ class ExampleInterface(StateInterface, ABC):
         super().__init__(base)
         self.p = contextPage
 
-    def exampleTransition(self, *args, **kwargs):
+    def simpleTransition(self, *args, **kwargs):
         pass

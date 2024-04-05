@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from dotenv import load_dotenv
 import warnings
+from typing import Dict
 
 from base.base_driver import BaseDriver
 from base.wait import MyBy
@@ -15,12 +16,24 @@ class StateInterface(ABC):
     An abstract class for all the state interface classes
     """
 
+    param: Dict[str, any] = {}
+
     def __init__(self, base: BaseDriver) -> None:
         self.__bd = base
 
     @property
     def bd(self):
         return self.__bd
+
+    @classmethod
+    def updateParam(cls, func):
+        def wrapper(*args, **kwargs):
+            cls.param.clear()
+            for key in kwargs.keys():
+                cls.param[key] = kwargs[key]
+            return func(*args, **kwargs)
+
+        return wrapper
 
 
 class Page(ABC):

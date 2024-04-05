@@ -1,8 +1,9 @@
 from functools import wraps
 import logging
 import sys
-
+from selenium.common.exceptions import StaleElementReferenceException
 from .faker import FakerGenerator
+import time as t
 
 
 class Wrapper:
@@ -41,6 +42,22 @@ class Wrapper:
             except Exception as e:
                 logging.getLogger(f"root.{__name__}.{decoratorClassName}.{decoratorMethodName}").error(f"error:\n{str(e)}")
                 raise Exception(str(e))
+
+        return wrapper
+
+    @classmethod
+    def stale_handler(func):
+        """
+        forced a function to retry find a missing staled element
+        """
+
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)
+            except StaleElementReferenceException:
+                t.sleep(1.8)
+                return func(*args, **kwargs)
 
         return wrapper
 
