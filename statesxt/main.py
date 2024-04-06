@@ -158,6 +158,7 @@ class StateSXT:
         if isProceeded:
             # deep-loop over self.tree and gather the choices
             choices = []
+            excludes = ["__pycache__"]
             defaultSkippedSub = "C:\\"
             skippedSub = defaultSkippedSub
             for destpath, dirs, files in os.walk(self.destdir):
@@ -166,7 +167,7 @@ class StateSXT:
                 pathname = subSplits[-1]
                 depth = len(subSplits) - 1
 
-                if (skippedSub not in sub) or (skippedSub not in subSplits):
+                if ((skippedSub not in sub) or (pathname not in subSplits)) and (pathname not in excludes):
                     isRenamed = sub in self.deprs
                     if (os.path.exists(os.path.join(self.sourcedir, sub)) or isRenamed) and (
                         sub != ""
@@ -184,14 +185,16 @@ class StateSXT:
                         if updateOpt == True:
                             choices.append([self.deprs[sub] if isRenamed else sub, "folder", sub if isRenamed else None])
 
-                    if (skippedSub not in sub) and (skippedSub not in subSplits):  # condition: when updateOpt tells to update folder entirely
-                        for file in files:  # condition: loop over files within destpath, and asking update to files
+                    # condition: each file will be checked or when updateOpt is 'select'
+                    if (skippedSub not in sub) and (skippedSub not in subSplits):
+                        for file in files:  # loop over files within destpath, and asking update to files
                             pathname = file
                             pSub = os.path.join(sub, pathname)
                             psubSplits = pSub.split("\\")
                             depth = len(psubSplits) - 1
                             isRenamed = pSub in self.deprs
-                            if os.path.exists(os.path.join(self.sourcedir, pSub)) or isRenamed:  # condition: check if the file exists in source
+                            # condition: check if the file exists in source
+                            if os.path.exists(os.path.join(self.sourcedir, pSub)) or isRenamed:
                                 updateOpt = self.toConfirm(
                                     input(
                                         " \u27b1 " * depth
@@ -269,7 +272,7 @@ class StateSXT:
     def cli(self):
         parser = argparse.ArgumentParser(description="Generate Directories")
         parser.add_argument("opt", help="Action to perform: 'generate', 'remove', 'update', and 'create-page'", choices=["generate", "remove", "update", "create-page"])
-        parser.add_argument("-v", "--version", action="version", version="StateSXT 0.5.8")
+        parser.add_argument("-v", "--version", action="version", version="StateSXT 0.5.9")
         args = parser.parse_args()
 
         if str(args.opt).lower() == "generate":
