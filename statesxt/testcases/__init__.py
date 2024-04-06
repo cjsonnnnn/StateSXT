@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from dotenv import load_dotenv
 import warnings
 from typing import Dict
+import inspect
 
 from base.base_driver import BaseDriver
 from base.wait import MyBy
@@ -27,11 +28,16 @@ class StateInterface(ABC):
 
     @classmethod
     def updateParam(cls, func):
+        sig = inspect.signature(func)
+        default_kwargs = {k: v.default for k, v in sig.parameters.items() if v.default != inspect.Parameter.empty}
+
         def wrapper(*args, **kwargs):
+            combined_kwargs = default_kwargs.copy()
+            combined_kwargs.update(kwargs)  # replace default with specified values
             cls.param.clear()
-            for key in kwargs.keys():
-                cls.param[key] = kwargs[key]
-            return func(*args, **kwargs)
+            for key in combined_kwargs.keys():
+                cls.param[key] = combined_kwargs[key]
+            return func(*args, **combined_kwargs)
 
         return wrapper
 
