@@ -7,7 +7,7 @@ from .interface import ExampleInterface
 class ExamplePage(Page):
     """Example Page action methods"""
 
-    def __init__(self, base, usecase):
+    def __init__(self, base, usecase=None):
         super().__init__(base)
         self.initState: ExampleInterface = self.setInitState(usecase)
         self.state = self.initState

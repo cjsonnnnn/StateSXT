@@ -15,7 +15,13 @@ class CheckDriver:
         self.mkd = MouseKeysDriver(driver)
         self.__driver = driver
 
-    def check_alert(self, isSuccess: bool, isVisible: bool, cust_message: str = None) -> bool:
+    def check_alert(
+        self,
+        isSuccess: bool,
+        isVisible: bool,
+        cust_message: str = None,
+        isChecked=True,
+    ) -> bool:
         """
         Checks the presence of alert element
 
@@ -28,18 +34,20 @@ class CheckDriver:
             bool: True means that the element is found, and vice versa
         """
 
-        if isVisible:
-            alert = self.wd.an_element(By.CLASS_NAME, "toast-body")
-            if isSuccess:
-                if alert.text == "success" or alert.text == cust_message:
-                    return True
+        if isChecked:
+            if isVisible:
+                alert = self.wd.an_element(By.CLASS_NAME, "toast-body")
+                if isSuccess:
+                    if alert.text == "success" or alert.text == cust_message:
+                        return True
+                else:
+                    if alert.text == "fail" or alert.text == cust_message:
+                        return True
+                return False
             else:
-                if alert.text == "fail" or alert.text == cust_message:
-                    return True
-            return False
-        else:
-            alert = self.wd.invisible(By.CLASS_NAME, "toast-body")
-            return True if alert else False
+                alert = self.wd.invisible(By.CLASS_NAME, "toast-body")
+                return True if alert else False
+        return True
 
     def check_indicator_row(
         self,

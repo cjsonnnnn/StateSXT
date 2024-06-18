@@ -122,9 +122,9 @@ class FormDriver:
             self.mkd.scrolling(clickables[index], sleep)
         clickables[index].click()
 
-    def select_period(
+    def select_date(
         self,
-        period: str,
+        input: str,
         date_input_element: WebElement,
         prev_button_locator,
         next_button_locator,
@@ -133,26 +133,22 @@ class FormDriver:
         date_per_day_locator,
         onFocus: bool = False,
         sleep: float = None,
+        isPeriod: bool = True,
     ):
-        """
-        Input value into the period element
 
-        Args:
-            period (str): is the date/period
-            input (str): is the string to be inputted
-            byEnter (bool): is the final action, e.g. True means the enter key will be pressed
-
-        Returns:
-            None
-        """
-
-        if period:
+        if input:
             if onFocus or sleep:
                 self.mkd.scrolling(date_input_element, sleep)
 
+            # define the date/period
+            # the date should be in order: year >> month >> day
             start_date: list[int]
             end_date: list[int]
-            start_date, end_date = Formatter().convert_period(period)
+            if isPeriod:
+                start_date, end_date = Formatter().convert_period(input)
+            else:
+                mm, dd, yyyy = input.split("/")
+                the_date = [int(yyyy), int(mm), int(dd)]
 
             # click the period date element
             date_input_element.click()
@@ -195,20 +191,27 @@ class FormDriver:
             cur_month = int(datetime.strptime(date_header[0], "%B").month)
             cur_year = int(date_header[1])
 
-            # get number of clicks needed to reach the start_date
-            month_diff_with_curr = start_date[1] - cur_month
-            year_diff_with_curr = start_date[0] - cur_year
-            start_clicks = 0
-            start_clicks += month_diff_with_curr
-            start_clicks += year_diff_with_curr * 12
+            # get number of clicks needed to reach the the_date/start_date
+            if isPeriod:
+                month_diff_with_curr = start_date[1] - cur_month
+                year_diff_with_curr = start_date[0] - cur_year
+                start_clicks = 0
+                start_clicks += month_diff_with_curr
+                start_clicks += year_diff_with_curr * 12
+            else:
+                month_diff_with_curr = the_date[1] - cur_month
+                year_diff_with_curr = the_date[0] - cur_year
+                start_clicks = 0
+                start_clicks += month_diff_with_curr
+                start_clicks += year_diff_with_curr * 12
 
             # move to the month and year of the start_date
             prev_and_next(start_clicks)
 
             # select date of the start_date
-            select_date(selected_date=str(start_date[2]))
+            select_date(selected_date=str(start_date[2] if isPeriod else the_date[2]))
 
-            if len(end_date) == 3:
+            if isPeriod and len(end_date) == 3:
                 # get number of clicks needed to reach the end_date
                 month_diff_with_end_date = end_date[1] - start_date[1]
                 year_diff_with_end_date = end_date[0] - start_date[0]

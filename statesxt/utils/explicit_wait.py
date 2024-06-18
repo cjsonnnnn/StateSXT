@@ -14,11 +14,11 @@ def explicit(
         try:
             res = condition()
             if withReturn:
-                if res:
-                    return res
+                return res if res else True
             else:
                 return
-        except:
+        except Exception as e:
+            print(f"Explicit error: {e}")
             pass
         t.sleep(poll_frequency)
     if not raiseError:

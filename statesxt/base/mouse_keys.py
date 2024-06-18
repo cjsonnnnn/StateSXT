@@ -7,6 +7,7 @@ from selenium.webdriver.common.keys import Keys
 from typing import Callable
 from typing import Union
 import time as t
+from utils.explicit_wait import explicit
 
 
 class MouseKeysDriver:
@@ -64,9 +65,8 @@ class MouseKeysDriver:
 
     def paginating(
         self,
-        target_row: list[str],
         func_get_paginations: Callable[[], list[WebElement]],
-        func_check_rows: Callable[[list[str]], bool],
+        func_check_rows: Callable,
         direction: str = "backward",
         tobeFound: bool = True,
         sleep: float = 0,
@@ -116,7 +116,7 @@ class MouseKeysDriver:
                 occur += 1
             # check current page's rows
             t.sleep(sleep)
-            if func_check_rows(target_row):
+            if explicit(func_check_rows, withReturn=True):
                 return True if tobeFound else False
             # forwarding / backwarding (depends on the direction)
             if occur != 1:
@@ -124,6 +124,14 @@ class MouseKeysDriver:
                     click_page_number(title="previous page", pns=pns, titles=titles) if (direction == "backward") else click_page_number(title="next page", pns=pns, titles=titles)
                 )
         return False if tobeFound else True
+
+    def pressing_keys(self, options: str) -> None:  # temp: has an unknown error
+        keys = {
+            "esc": Keys.ESCAPE,
+            "enter": Keys.ENTER,
+        }
+        self.ac.send_keys(keys[options]).perform()
+        self.ac.reset_actions()
 
     def scrolling(
         self,

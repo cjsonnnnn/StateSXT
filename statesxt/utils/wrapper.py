@@ -115,12 +115,13 @@ class Wrapper:
                     "empty",
                     "inactive",
                     "uncheck",
+                    "unchecked",
                 ]
                 anyFormats = ["anything", "dc", "Any", "any"]
 
                 for row in data:
                     # preprocess data
-                    row = [None if (col in emptyFormats) else col for col in row]
+                    row = [None if (str(col).lower() in emptyFormats) else col for col in row]
                     row = [(FakerGenerator().generate_sentence() if (col in anyFormats) else col) for col in row]
 
                     try:
