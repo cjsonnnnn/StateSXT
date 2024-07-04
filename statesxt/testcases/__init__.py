@@ -32,12 +32,26 @@ class StateInterface(ABC):
         default_kwargs = {k: v.default for k, v in sig.parameters.items() if v.default != inspect.Parameter.empty}
 
         def wrapper(*args, **kwargs):
-            combined_kwargs = default_kwargs.copy()
-            combined_kwargs.update(kwargs)  # replace default with specified values
             cls.param.clear()
-            for key in combined_kwargs.keys():
-                cls.param[key] = combined_kwargs[key]
-            return func(*args, **combined_kwargs)
+            combined_params = default_kwargs.copy()
+            default_keys = combined_params.keys()
+            specified_keys = kwargs.keys()
+            positional_keys = list(sig.parameters.keys())[1:]
+            for i, key in enumerate(positional_keys):
+                if key not in default_keys:  # when it's an arg
+                    if key in specified_keys:
+                        combined_params[key] = kwargs[key]
+                    else:
+                        combined_params[key] = args[i + 1]
+                else:  # when it's a kwarg
+                    if key in specified_keys:
+                        combined_params[key] = kwargs[key]
+                    else:
+                        if len(args) > (i + 1):
+                            combined_params[key] = args[i + 1]
+                cls.param[key] = combined_params[key]
+
+            return func(*[args[0]], **combined_params)
 
         return wrapper
 

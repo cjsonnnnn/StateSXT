@@ -21,7 +21,13 @@ from .wait import WaitDriver
 class BaseDriver:
     """Wraps driver and provides all common-used WebDriver actions"""
 
-    def __init__(self, browser, domain=None, fullscreen=True, duration: int = 10) -> None:
+    def __init__(
+        self,
+        browser,
+        domain=None,
+        fullscreen=True,
+        duration: int = 10,
+    ) -> None:
         self.setup(browser, domain, fullscreen)
 
         self.cd = CheckDriver(self.__driver, duration)
@@ -35,7 +41,7 @@ class BaseDriver:
 
         try:
             # setup driver
-            print("\nSetting up driver...", end=" ")
+            print("\nSetting up driver...")
             start = time.time()
             if browser == "brave":
                 self.__driver = webdriver.Chrome(service=BraveService(ChromeDriverManager(chrome_type=ChromeType.BRAVE).install()))
@@ -49,7 +55,7 @@ class BaseDriver:
             print(f"Takes {end-start} seconds to complete.")
 
             # setup domain
-            print("\nSetting up domain...", end=" ")
+            print("\nSetting up domain...")
             start = time.time()
             if domain:
                 self.__driver.get("<Your Custom Domain URL>")
@@ -61,6 +67,7 @@ class BaseDriver:
             # setup screen size
             if fullscreen:
                 self.__driver.maximize_window()
+
         except Exception as e:
             logging.getLogger(f"root.{__name__}.{self.__class__.__name__}.{sys._getframe().f_code.co_name}").error(f"in the process of running setup:\n{str(e)}")
             raise Exception(str(e))
