@@ -4,7 +4,7 @@ line-length = 180
 name = "statesxt"
 version = "0.1.0"
 description = ""
-authors = ["jsonnnnn <cjsonnnnn@gmail.com>"]
+authors = ["cjsonnnnn <cjsonnnnn@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -90,6 +90,7 @@ webdriver-manager = "4.0.1"
 wsproto = "1.2.0"
 zstandard = "0.21.0"
 numpy = "1.26.4"
+pynput = "^1.7.7"
 
 
 [build-system]

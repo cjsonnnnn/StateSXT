@@ -8,6 +8,7 @@ from typing import Callable
 from typing import Union
 import time as t
 from utils.explicit_wait import explicit
+from pynput.keyboard import Key, Controller
 
 
 class MouseKeysDriver:
@@ -17,6 +18,7 @@ class MouseKeysDriver:
 
     def __init__(self, driver: WebDriver) -> None:
         self.ac = ActionChains(driver)
+        self.keyboard = Controller()
         self.__driver = driver
 
     def clicking(
@@ -125,13 +127,21 @@ class MouseKeysDriver:
                 )
         return False if tobeFound else True
 
-    def pressing_keys(self, options: str) -> None:  # temp: has an unknown error
+    def typing(self, option: str) -> None:  # temp: has an unknown error
         keys = {
-            "esc": Keys.ESCAPE,
-            "enter": Keys.ENTER,
+            "esc": Key.esc,
+            "enter": Key.enter,
+            "delete": Key.delete,
+            "up": Key.up,
+            "down": Key.down,
+            "left": Key.left,
+            "right": Key.right,
         }
-        self.ac.send_keys(keys[options]).perform()
-        self.ac.reset_actions()
+        if option in keys:
+            self.keyboard.press(keys[option])
+            self.keyboard.release(keys[option])
+        else:
+            self.keyboard.type(option)
 
     def scrolling(
         self,
